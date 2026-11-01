@@ -43,7 +43,7 @@
     "cacache": "^21.0.1",
     "debug": "^4.4.3",
     "rimraf": "^5.0.10",
-    "tslib": "^2.8.1"
+    "tslib": "^2.9.1"
   },
   "devDependencies": {
     "@loopback/build": "^13.0.0",
