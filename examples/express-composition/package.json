@@ -54,7 +54,7 @@
     "@loopback/rest-explorer": "^9.0.0",
     "@loopback/service-proxy": "^9.0.0",
     "express": "^4.22.3",
-    "tslib": "^2.8.1"
+    "tslib": "^2.9.1"
   },
   "devDependencies": {
     "@loopback/build": "^13.0.0",
