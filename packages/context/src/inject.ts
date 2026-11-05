@@ -501,6 +501,20 @@ function findOrCreateBindingForInjection(
 }
 
 /**
+ * Check if the given class can inherit metadata from a base class. Besides
+ * `extends`, `Reflect.getMetadata` also follows a base class that is linked
+ * only through the `prototype` of the class.
+ *
+ * @param targetClass - Target class
+ */
+function hasBaseClass(targetClass: Object) {
+  if (Object.getPrototypeOf(targetClass) !== Function.prototype) return true;
+  const proto = (targetClass as {prototype?: object}).prototype;
+  const baseProto = proto && Object.getPrototypeOf(proto);
+  return baseProto != null && baseProto !== Object.prototype;
+}
+
+/**
  * Check if constructor injection should be applied to the base class
  * of the given target class
  *
@@ -589,7 +603,7 @@ export function describeInjectedArguments(
   // Build the description
   const options: InspectionOptions = {};
   if (method === '') {
-    if (shouldSkipBaseConstructorInjection(target)) {
+    if (hasBaseClass(target) && shouldSkipBaseConstructorInjection(target)) {
       options.ownMetadataOnly = true;
     }
   } else if (Object.prototype.hasOwnProperty.call(target, method)) {
