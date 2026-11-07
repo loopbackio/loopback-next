@@ -60,6 +60,25 @@ describe('boot-strapper unit tests', () => {
     expect(phasesCalled).to.eql(['AnotherBooter:configure']);
   });
 
+  it('reuses the booter instances of a context passed to boot()', async () => {
+    const ctx = await bootstrapper.boot({
+      filter: {booters: ['TestBooter'], phases: ['configure']},
+    });
+    const booterInst = await ctx.get<TestBooter>(booterKey);
+    expect(booterInst.phasesCalled).to.eql(['TestBooter:configure']);
+
+    const sameCtx = await bootstrapper.boot(
+      {filter: {booters: ['TestBooter'], phases: ['load']}},
+      ctx,
+    );
+
+    expect(sameCtx).to.equal(ctx);
+    expect(booterInst.phasesCalled).to.eql([
+      'TestBooter:configure',
+      'TestBooter:load',
+    ]);
+  });
+
   it('only runs phases passed in via BootOptions.filter.phases', async () => {
     const ctx = await bootstrapper.boot({filter: {phases: ['configure']}});
     const booterInst = await ctx.get<TestBooter>(booterKey);
