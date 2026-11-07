@@ -72,7 +72,7 @@ export class Customer extends Entity {
   })
   name?: string;
 
-  @referencesMany(() => Account)
+  @referencesMany(() => Account, {}, {type: 'array', })
   accountIds: number[];
 
   constructor(data?: Partial<Customer>) {
