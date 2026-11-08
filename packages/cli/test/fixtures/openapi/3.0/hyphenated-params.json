@@ -1,0 +1,77 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Hyphenated Properties API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/customers": {
+      "get": {
+        "operationId": "getCustomers",
+        "summary": "List customers",
+        "parameters": [
+          {
+            "name": "limit-number",
+            "in": "query",
+            "description": "Maximum number of customers to return",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "status-code",
+            "in": "query",
+            "description": "Filter by customer status",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["active", "inactive"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Customer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "customer-id": {
+            "type": "string",
+            "example": "cust_001"
+          },
+          "first-name": {
+            "type": "string",
+            "example": "John"
+          },
+          "last-name": {
+            "type": "string",
+            "example": "Doe"
+          }
+        },
+        "required": [
+          "customer-id",
+          "first-name"
+        ]
+      }
+    }
+  }
+}
