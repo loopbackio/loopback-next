@@ -66,7 +66,7 @@
     "husky": "^9.1.7",
     "lerna": "^9.0.7",
     "lint-staged": "^17.6.0",
-    "markdown-table": "^3.0.4",
+    "markdown-table": "^3.1.0",
     "mem-fs": "^2.3.0",
     "mem-fs-editor": "^9.7.0",
     "open-cli": "^9.0.0",
