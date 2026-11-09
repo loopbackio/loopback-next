@@ -54,6 +54,6 @@
     "typescript": "npm:@typescript/typescript6@~6.0.2",
     "util": "^0.12.5",
     "webpack": "^5.112.2",
-    "webpack-cli": "^7.2.3"
+    "webpack-cli": "^7.3.1"
   }
 }
