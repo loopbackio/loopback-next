@@ -44,7 +44,7 @@
   "dependencies": {
     "@loopback/repository-json-schema": "^10.0.0",
     "debug": "^4.4.3",
-    "http-status": "^1.8.1",
+    "http-status": "^2.1.0",
     "json-merge-patch": "^1.0.2",
     "lodash": "^4.18.1",
     "openapi3-ts": "^2.0.2",
