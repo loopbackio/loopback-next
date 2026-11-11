@@ -91,6 +91,62 @@ describe('importDiscoveredModel', () => {
     });
   });
 
+  it('sets jsonSchema.maxLength for String properties with length', () => {
+    const discoveredModel = {
+      name: 'TestModel',
+      properties: {
+        name: {
+          type: 'String',
+          required: true,
+          length: 100,
+          precision: null,
+          scale: null,
+        },
+      },
+    };
+
+    const modelData = importDiscoveredModel(discoveredModel);
+    expect(modelData.properties).to.have.property('name').deepEqual({
+      type: `'string'`,
+      tsType: 'string',
+      required: true,
+      length: 100,
+      jsonSchema: '{maxLength: 100}',
+    });
+  });
+
+  it('preserves existing jsonSchema when adding maxLength', () => {
+    const discoveredModel = {
+      name: 'TestModel',
+      properties: {
+        kind: {
+          type: 'String',
+          jsonSchema: {enum: ['A', 'B']},
+          length: 10,
+        },
+      },
+    };
+
+    const modelData = importDiscoveredModel(discoveredModel);
+    expect(modelData.properties.kind.jsonSchema).to.equal(
+      "{maxLength: 10, enum: ['A', 'B']}",
+    );
+  });
+
+  it('does not set jsonSchema.maxLength for non-String properties', () => {
+    const discoveredModel = {
+      name: 'TestModel',
+      properties: {
+        image: {type: 'Binary', length: 255},
+        counter: {type: 'Number', length: 11},
+      },
+    };
+
+    const modelData = importDiscoveredModel(discoveredModel);
+    expect(modelData.properties.image).to.not.have.property('jsonSchema');
+    expect(modelData.properties.counter).to.not.have.property('jsonSchema');
+  });
+
   it('imports Boolean properties', () => {
     const discoveredModel = {
       name: 'TestModel',

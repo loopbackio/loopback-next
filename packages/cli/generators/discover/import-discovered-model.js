@@ -65,6 +65,20 @@ function importPropertyDefinition(discoveredDefinition) {
   const builtinType = findBuiltinType(propDef.type);
   if (builtinType) propDef.type = builtinType;
 
+  // Make the column length enforceable by the request/response validation
+  // (and visible to databases running in strict SQL mode) by mirroring it
+  // as JSON schema `maxLength`. The `length` property is preserved.
+  if (
+    propDef.type === 'string' &&
+    Number.isInteger(propDef.length) &&
+    propDef.length > 0
+  ) {
+    propDef.jsonSchema = {
+      maxLength: propDef.length,
+      ...propDef.jsonSchema,
+    };
+  }
+
   sanitizeProperty(propDef);
   return createPropertyTemplateData(propDef);
 }

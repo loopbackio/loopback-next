@@ -107,6 +107,7 @@ export class My extends Entity {
     type: 'string',
     required: true,
     length: 100,
+    jsonSchema: {maxLength: 100},
     postgresql: {
       columnName: 'my_name',
       dataType: 'character varying',
@@ -116,6 +117,13 @@ export class My extends Entity {
   })
   my_name: string;
 ```
+
+For `string` columns that have a length, the discovered model also sets
+`jsonSchema.maxLength` to the same value (the `length` property is kept as is).
+This lets LoopBack's request validation reject over-long values with a
+`422 Unprocessable Entity` error instead of having them silently truncated, or
+rejected with an internal server error when the database runs in strict SQL
+mode.
 
 Database column names can be different from property names. It can simply be
 done by modifying the property name as long as the property has the
@@ -147,6 +155,7 @@ export class MyModel extends Entity {
     type: 'string',
     required: true,
     length: 100,
+    jsonSchema: {maxLength: 100},
     postgresql: {
       columnName: 'my_name',
       dataType: 'character varying',
