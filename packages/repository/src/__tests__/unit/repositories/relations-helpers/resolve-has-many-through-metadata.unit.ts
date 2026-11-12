@@ -148,6 +148,63 @@ describe('HasManyThroughHelpers', () => {
     });
   });
 
+  context('createTargetConstraintFromThroughWithCustomReferenceKeys', () => {
+    it('creates constraint for searching target models', () => {
+      const through1 = createFriend({
+        id: 1,
+        userId: 'user@gmail.com',
+        friendId: 'friendUser@gmail.com',
+      });
+      const through2 = createFriend({
+        id: 2,
+        userId: 'user1@gmail.com',
+        friendId: 'friendUser1@gmail.com',
+      });
+
+      // single through model
+      let result = createTargetConstraintFromThrough(
+        relationMetaDataWithCustomReferenceKeys,
+        [through1],
+      );
+      expect(result).to.containEql({email: 'friendUser@gmail.com'});
+      // multiple through models
+      result = createTargetConstraintFromThrough(
+        relationMetaDataWithCustomReferenceKeys,
+        [through1, through2],
+      );
+      expect(result).to.containEql({
+        email: {inq: ['friendUser@gmail.com', 'friendUser1@gmail.com']},
+      });
+    });
+  });
+
+  context('getTargetIdsFromTargetModelsForCustomReferenceKeys', () => {
+    it('returns an empty array if the given target array is empty', () => {
+      const result = getTargetIdsFromTargetModels(
+        relationMetaDataWithCustomReferenceKeys,
+        [],
+      );
+      expect(result).to.containDeep([]);
+    });
+    it('creates constraint with a given fk', () => {
+      const result = getTargetIdsFromTargetModels(
+        relationMetaDataWithCustomReferenceKeys,
+        [createUser({id: 1, email: 'user@gmail.com'})],
+      );
+      expect(result).to.containDeep(['user@gmail.com']);
+    });
+    it('creates constraint with given fks', () => {
+      const result = getTargetIdsFromTargetModels(
+        relationMetaDataWithCustomReferenceKeys,
+        [
+          createUser({id: 1, email: 'user@gmail.com'}),
+          createUser({id: 2, email: 'user1@gmail.com'}),
+        ],
+      );
+      expect(result).to.containDeep(['user@gmail.com', 'user1@gmail.com']);
+    });
+  });
+
   context('getTargetIdsFromTargetModels', () => {
     it('returns an empty array if the given target array is empty', () => {
       const result = getTargetIdsFromTargetModels(relationMetaData, []);
@@ -192,6 +249,33 @@ describe('HasManyThroughHelpers', () => {
       );
       expect(result[0].toString()).to.containDeep('department-1');
       expect(result[1].toString()).to.containDeep('department-2');
+    });
+  });
+
+  context('createThroughConstraintFromTargetWithCustomReferenceKeys', () => {
+    it('creates constraint with a given fk', () => {
+      const result = createThroughConstraintFromTarget(
+        relationMetaDataWithCustomReferenceKeys,
+        ['user@gmail.com'],
+      );
+      expect(result).to.containEql({friendId: 'user@gmail.com'});
+    });
+    it('creates constraint with given fks', () => {
+      const result = createThroughConstraintFromTarget(
+        relationMetaDataWithCustomReferenceKeys,
+        ['user@gmail.com', 'user1@gmail.com'],
+      );
+      expect(result).to.containEql({
+        friendId: {inq: ['user@gmail.com', 'user1@gmail.com']},
+      });
+    });
+    it('throws if fkValue is undefined', () => {
+      expect(() =>
+        createThroughConstraintFromTarget(
+          relationMetaDataWithCustomReferenceKeys,
+          [],
+        ),
+      ).to.throw(/"fkValue" must be provided/);
     });
   });
 
@@ -431,6 +515,41 @@ describe('HasManyThroughHelpers', () => {
       });
     });
   });
+
+  context('resolveHasManyThroughMetadataWithCustomReferenceKeys', () => {
+    it('throws if the wrong metadata type is used', async () => {
+      const metadata = {
+        name: 'friends',
+        type: 'hasMany',
+        targetsMany: true,
+        source: User,
+        customReferenceKeyFrom: 'email',
+        customReferenceKeyTo: 'email',
+        keyFrom: 'id',
+        target: () => User,
+        keyTo: 'id',
+        through: {
+          model: () => Friend,
+          keyFrom: 'userId',
+          keyTo: 'friendId',
+          polymorphic: false,
+        },
+      };
+
+      const result = resolveHasManyThroughMetadata(
+        metadata as HasManyDefinition,
+      );
+
+      expect(result).to.containEql({
+        name: 'friends',
+        type: 'hasMany',
+        customReferenceKeyFrom: 'email',
+        customReferenceKeyTo: 'email',
+      });
+
+      expect(result).containDeep({through: {keyTo: 'friendId'}});
+    });
+  });
   /******  HELPERS *******/
 
   @model()
@@ -525,6 +644,35 @@ describe('HasManyThroughHelpers', () => {
     }
   }
 
+  @model()
+  class User extends Entity {
+    @property({id: true})
+    id: number;
+
+    @property({})
+    email: string;
+
+    constructor(data: Partial<User>) {
+      super(data);
+    }
+  }
+
+  @model()
+  class Friend extends Entity {
+    @property({id: true})
+    id: number;
+
+    @property({})
+    userId: string;
+
+    @property({})
+    friendId: string;
+
+    constructor(data: Partial<Friend>) {
+      super(data);
+    }
+  }
+
   const relationMetaData = {
     name: 'products',
     type: 'hasMany',
@@ -573,6 +721,24 @@ describe('HasManyThroughHelpers', () => {
     },
   } as HasManyThroughResolvedDefinition;
 
+  const relationMetaDataWithCustomReferenceKeys = {
+    name: 'friends',
+    type: 'hasMany',
+    targetsMany: true,
+    source: User,
+    customReferenceKeyFrom: 'email',
+    customReferenceKeyTo: 'email',
+    keyFrom: 'id',
+    target: () => User,
+    keyTo: 'id',
+    through: {
+      model: () => Friend,
+      keyFrom: 'userId',
+      keyTo: 'friendId',
+      polymorphic: false,
+    },
+  } as HasManyThroughResolvedDefinition;
+
   class InvalidThrough extends Entity {}
   InvalidThrough.definition = new ModelDefinition('InvalidThrough')
     .addProperty('id', {
@@ -593,8 +759,14 @@ describe('HasManyThroughHelpers', () => {
     // lack through.keyTo
     .addProperty('categoryId', {type: 'number'});
 
+  function createFriend(properties: Partial<Friend>) {
+    return new Friend(properties);
+  }
   function createCategoryProductLink(properties: Partial<CategoryProductLink>) {
     return new CategoryProductLink(properties);
+  }
+  function createUser(properties: Partial<User>) {
+    return new User(properties);
   }
   function createProduct(properties: Partial<Product>) {
     return new Product(properties);
