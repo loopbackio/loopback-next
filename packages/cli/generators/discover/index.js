@@ -366,7 +366,9 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < this.artifactInfo.modelDefinitions.length; i++) {
       const modelDefinition = this.artifactInfo.modelDefinitions[i];
-      const templateData = importDiscoveredModel(modelDefinition);
+      const templateData = importDiscoveredModel(modelDefinition, {
+        connector: this.artifactInfo.dataSource.connector?.name,
+      });
 
       debug(
         'Generating model %s from template data',

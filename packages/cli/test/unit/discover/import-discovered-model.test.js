@@ -10,6 +10,8 @@ const {
   importDiscoveredModel,
 } = require('../../../generators/discover/import-discovered-model');
 
+const pg = {connector: 'postgresql'};
+
 describe('importDiscoveredModel', () => {
   it('imports empty schema', () => {
     const modelData = importDiscoveredModel({
@@ -105,7 +107,7 @@ describe('importDiscoveredModel', () => {
       },
     };
 
-    const modelData = importDiscoveredModel(discoveredModel);
+    const modelData = importDiscoveredModel(discoveredModel, pg);
     expect(modelData.properties).to.have.property('name').deepEqual({
       type: `'string'`,
       tsType: 'string',
@@ -127,7 +129,7 @@ describe('importDiscoveredModel', () => {
       },
     };
 
-    const modelData = importDiscoveredModel(discoveredModel);
+    const modelData = importDiscoveredModel(discoveredModel, pg);
     expect(modelData.properties.kind.jsonSchema).to.equal(
       "{maxLength: 10, enum: ['A', 'B']}",
     );
@@ -142,9 +144,21 @@ describe('importDiscoveredModel', () => {
       },
     };
 
-    const modelData = importDiscoveredModel(discoveredModel);
+    const modelData = importDiscoveredModel(discoveredModel, pg);
     expect(modelData.properties.image).to.not.have.property('jsonSchema');
     expect(modelData.properties.counter).to.not.have.property('jsonSchema');
+  });
+
+  it('does not set jsonSchema.maxLength for non-PostgreSQL connectors', () => {
+    const discoveredModel = {
+      name: 'TestModel',
+      properties: {name: {type: 'String', length: 100}},
+    };
+
+    for (const options of [{connector: 'mysql'}, {}]) {
+      const modelData = importDiscoveredModel(discoveredModel, options);
+      expect(modelData.properties.name).to.not.have.property('jsonSchema');
+    }
   });
 
   it('imports Boolean properties', () => {
