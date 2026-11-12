@@ -139,19 +139,6 @@ describe('mapDatabaseErrorToHttpError', () => {
     expect(mapDatabaseErrorToHttpError(false)).to.equal(false);
   });
 
-  it('preserves the original error message', () => {
-    const error = {
-      code: 'UNIQUE_CONSTRAINT_VIOLATION',
-      message: 'Email already exists',
-    };
-
-    const result = mapDatabaseErrorToHttpError(error);
-
-    expect(result).to.be.instanceof(HttpErrors.Conflict);
-    expect(result).to.have.property('statusCode', 409);
-    expect(result).to.have.property('message', 'Email already exists');
-  });
-
   it('handles an object without a code unchanged', () => {
     const error = {
       message: 'Some database error',

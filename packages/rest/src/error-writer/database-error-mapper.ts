@@ -32,7 +32,7 @@ export function mapDatabaseErrorToHttpError(
 
   const errorObj = err as {code?: string; message?: string};
   const code = errorObj.code;
-  const getMessage = message => {
+  const getMessage = (message: string) => {
     return message;
   };
 

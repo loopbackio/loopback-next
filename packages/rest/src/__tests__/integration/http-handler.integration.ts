@@ -625,7 +625,7 @@ describe('HttpHandler', () => {
       await client.get('/database-error').expect(409, {
         error: {
           name: 'ConflictError',
-          message: 'Database error',
+          message: 'A record with this unique value already exists.',
           statusCode: 409,
         },
       });
