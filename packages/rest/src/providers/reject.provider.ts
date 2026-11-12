@@ -6,6 +6,10 @@
 import {BindingScope, inject, injectable} from '@loopback/core';
 import {HttpError} from 'http-errors';
 import {ErrorWriterOptions, writeErrorToResponse} from 'strong-error-handler';
+import {
+  DatabaseErrorMappingOptions,
+  mapDatabaseErrorToHttpError,
+} from '../error-writer/database-error-mapper';
 import {RestBindings} from '../keys';
 import {HandlerContext, LogError, Reject} from '../types';
 
@@ -22,9 +26,12 @@ export class RejectProvider {
     logError: LogError,
     @inject(RestBindings.ERROR_WRITER_OPTIONS, {optional: true})
     errorWriterOptions?: ErrorWriterOptions,
+    @inject(RestBindings.DATABASE_ERROR_MAPPING_OPTIONS, {optional: true})
+    dbErrorOptions?: DatabaseErrorMappingOptions,
   ): Reject {
     const reject: Reject = ({request, response}: HandlerContext, error) => {
-      const err = <HttpError>error;
+      const mappedError = mapDatabaseErrorToHttpError(error, dbErrorOptions);
+      const err = <HttpError>mappedError;
 
       if (!err.status && !err.statusCode && err.code) {
         const customStatus = codeToStatusCodeMap[err.code];
@@ -32,10 +39,9 @@ export class RejectProvider {
           err.statusCode = customStatus;
         }
       }
-
       const statusCode = err.statusCode || err.status || 500;
       writeErrorToResponse(err, request, response, errorWriterOptions);
-      logError(error, statusCode, request);
+      logError(err, statusCode, request);
     };
     return reject;
   }
