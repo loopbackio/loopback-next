@@ -133,6 +133,10 @@ module.exports = class HasManyThroughRelationGenerator extends (
       sourceModel,
     );
     const sourceClass = relationUtils.getClassObj(sourceFile, sourceModel);
+    const modelPropertyMetadata = relationUtils.getPropertyMetadata(
+      sourceClass,
+      relationName,
+    );
     relationUtils.doesRelationExist(sourceClass, relationName);
     // add the relation to the source model
     const isDefaultSourceKey = sourceKey === dftSourceKey;
@@ -145,6 +149,7 @@ module.exports = class HasManyThroughRelationGenerator extends (
       sourceKey,
       isDefaultTargetKey,
       targetKey,
+      modelPropertyMetadata,
     );
     relationUtils.addProperty(sourceClass, modelProperty);
     let imports;
@@ -200,29 +205,52 @@ module.exports = class HasManyThroughRelationGenerator extends (
     sourceKey,
     isDefaultTargetKey,
     targetKey,
+    modelPropertyMetadata,
   ) {
-    let keyFrom = '';
-    let keyTo = '';
+    const decoratorArguments = [`() => ${targetClass}`];
+    const throughOptions = [`model: () => ${throughModel}`];
     if (!isDefaultSourceKey) {
-      keyFrom = `, keyFrom: '${sourceKey}'`;
+      throughOptions.push(`keyFrom: '${sourceKey}'`);
     }
     if (!isDefaultTargetKey) {
-      keyTo = `, keyTo: '${targetKey}'`;
+      throughOptions.push(`keyTo: '${targetKey}'`);
+    }
+    decoratorArguments.push(`{through: {${throughOptions.join(', ')}}}`);
+
+    let propertyDetailOption = '';
+    if (modelPropertyMetadata && modelPropertyMetadata.trim() !== '') {
+      propertyDetailOption = modelPropertyMetadata
+        .replace(/^\{|\}$/g, '')
+        .trim();
+    }
+    if (propertyDetailOption) {
+      decoratorArguments.push(`{${propertyDetailOption}}`);
     }
 
-    const relationDecorator = [
-      {
-        name: 'hasMany',
-        arguments: [
-          `() => ${targetClass}, {through: {model: () => ${throughModel}${keyFrom}${keyTo}}}`,
-        ],
-      },
-    ];
-    return {
-      decorators: relationDecorator,
+    let isPropertyOptional = false;
+    if (
+      modelPropertyMetadata &&
+      modelPropertyMetadata.includes('nullable: true')
+    ) {
+      isPropertyOptional = true;
+    }
+    const cleanTargetClass = targetClass
+      .replace(/\s*\|\s*undefined/g, '')
+      .trim();
+    const property = {
+      decorators: [
+        {
+          name: 'hasMany',
+          arguments: decoratorArguments,
+        },
+      ],
       name: relationName,
-      type: targetClass + '[]',
+      type: `${cleanTargetClass}[]`,
     };
+    if (isPropertyOptional) {
+      property.hasQuestionToken = isPropertyOptional;
+    }
+    return property;
   }
 
   _addThroughRepoToRepositoryConstructor(repositoryConstructor) {

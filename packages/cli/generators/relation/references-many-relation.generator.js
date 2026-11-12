@@ -40,6 +40,10 @@ module.exports = class ReferencesManyRelationGenerator extends (
       sourceModel,
     );
     const sourceClass = relationUtils.getClassObj(sourceFile, sourceModel);
+    const modelPropertyMetadata = relationUtils.getPropertyMetadata(
+      sourceClass,
+      foreignKeyName,
+    );
     // this checks if the foreign key already exists, so the 2nd param should be foreignKeyName
     relationUtils.doesRelationExist(sourceClass, foreignKeyName);
 
@@ -49,6 +53,7 @@ module.exports = class ReferencesManyRelationGenerator extends (
       defaultRelationName,
       foreignKeyName,
       fkType,
+      modelPropertyMetadata,
     );
 
     relationUtils.addProperty(sourceClass, modelProperty);
@@ -65,28 +70,51 @@ module.exports = class ReferencesManyRelationGenerator extends (
     defaultRelationName,
     foreignKeyName,
     fkType,
+    modelPropertyMetadata,
   ) {
-    // checks if relation name is customized
-    let relationDecorator = [
-      {
-        name: 'referencesMany',
-        arguments: [`() =>  ${className}`],
-      },
-    ];
-    // already checked if the relation name is the same as the source key before
+    const decoratorArguments = [`() => ${className}`];
+    const relationOptions = [];
     if (defaultRelationName !== relationName) {
-      relationDecorator = [
+      relationOptions.push(`name: '${relationName}'`);
+    }
+    if (relationOptions.length) {
+      decoratorArguments.push(`{${relationOptions.join(', ')}}`);
+    }
+    let cleanedPropertyMetadata = '';
+    if (modelPropertyMetadata && modelPropertyMetadata.trim() !== '') {
+      // Strip outer braces if modelPropertyMetadata is passed as a braced string like "{ nullable: true }"
+      cleanedPropertyMetadata = modelPropertyMetadata
+        .replace(/^\{|\}$/g, '')
+        .trim();
+    }
+    if (cleanedPropertyMetadata) {
+      if (decoratorArguments.length === 1) {
+        decoratorArguments.push('{}');
+      }
+      decoratorArguments.push(`{${cleanedPropertyMetadata}}`);
+    }
+    let isPropertyOptional = false;
+    if (
+      modelPropertyMetadata &&
+      modelPropertyMetadata.includes('nullable: true')
+    ) {
+      isPropertyOptional = true;
+    }
+    const cleanFkType = fkType.replace(/\s*\|\s*undefined/g, '').trim();
+    const property = {
+      decorators: [
         {
           name: 'referencesMany',
-          arguments: [`() => ${className}, {name: '${relationName}'}`],
+          arguments: decoratorArguments,
         },
-      ];
-    }
-    return {
-      decorators: relationDecorator,
+      ],
       name: foreignKeyName,
-      type: fkType + '[]',
+      type: `${cleanFkType}[]`,
     };
+    if (isPropertyOptional) {
+      property.hasQuestionToken = isPropertyOptional;
+    }
+    return property;
   }
 
   _getRepositoryRequiredImports(dstModelClassName, dstRepositoryClassName) {
