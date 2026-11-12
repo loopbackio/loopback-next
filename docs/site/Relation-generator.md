@@ -140,10 +140,10 @@ lb4 relation --sourceModel=<sourceModel>
   source or target model.
 
 - `<customSourceModelKey>` - Property to that references the key in the source
-  model
+  model.
 
 - `<customTargetModelKey>` - Property to that references the key in the target
-  model
+  model.
 
 ### Interactive Prompts
 
