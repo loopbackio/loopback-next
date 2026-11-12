@@ -20,14 +20,30 @@ import {<%if (sourceModelClassName != targetModelClassName) { %>
 <%= throughModelClassName %>,
 <%= targetModelClassName %>,
 } from '../models';
+<%_ if (customSourceModelKey) { _%>
+import {
+<%_ if (sourceRepositoryClassName !== targetRepositoryClassName) { _%>
+<%= targetRepositoryClassName %>,
+<%_ } _%>
+<%= throughRepositoryClassName %>,
+<%= sourceRepositoryClassName %>,
+} from '../repositories';
+<%_ } else { _%>
 import {<%= sourceRepositoryClassName %>} from '../repositories';
+<%_ } _%>
 
 export class <%= controllerClassName %> {
   constructor(
     @repository(<%= sourceRepositoryClassName %>) protected <%= paramSourceRepository %>: <%= sourceRepositoryClassName %>,
+<%_ if (customSourceModelKey) { _%>
+  <%_ if (sourceRepositoryClassName !== targetRepositoryClassName) { _%>
+    @repository(<%= targetRepositoryClassName %>) protected <%= paramTargetRepository %>: <%= targetRepositoryClassName %>,
+  <%_ } _%>
+    @repository(<%= throughRepositoryClassName %>) protected <%= paramThroughRepository %>: <%= throughRepositoryClassName %>,
+<%_ } _%>
   ) { }
 
-  @get('/<%= sourceModelPath %>/{id}/<%= targetModelPath %>', {
+  @get('/<%= sourceModelPath %>/{<%= idPath %>}/<%= targetModelPath %>', {
     responses: {
       '200': {
         description: 'Array of <%= sourceModelClassName %> has many <%= targetModelClassName %> through <%= throughModelClassName %>',
@@ -40,13 +56,20 @@ export class <%= controllerClassName %> {
     },
   })
   async find(
-    @param.path.<%= sourceModelPrimaryKeyType %>('id') id: <%= sourceModelPrimaryKeyType %>,
+    @param.path.<%= sourceModelPrimaryKeyType %>('<%= idPath %>') <%= idPath %>: <%= sourceModelPrimaryKeyType %>,
     @param.query.object('filter') filter?: Filter<<%= targetModelClassName %>>,
   ): Promise<<%= targetModelClassName %>[]> {
+    <%_ if (customSourceModelKey) { _%>
+      const keys: any[] = [];
+      const throughKeys: <%= throughModelClassName %>[] = await this.<%= paramThroughRepository %>.find({where: {<%= sourceKeyOnThrough %>: <%= idPath %>}});
+      throughKeys.forEach(throughKey => { keys.push(throughKey.<%= targetKeyOnThrough %>); });
+      return this.<%= paramTargetRepository %>.find({...filter, where: { <%= customTargetModelKey %>: { inq: keys } }});
+    <%_ } else { _%>
     return this.<%= paramSourceRepository %>.<%= relationPropertyName %>(id).find(filter);
+    <%_ } _%>
   }
 
-  @post('/<%= sourceModelPath %>/{id}/<%= targetModelPath %>', {
+  @post('/<%= sourceModelPath %>/{<%= idPath %>}/<%= targetModelPath %>', {
     responses: {
       '200': {
         description: 'create a <%= targetModelClassName %> model instance',
@@ -55,7 +78,7 @@ export class <%= controllerClassName %> {
     },
   })
   async create(
-    @param.path.<%= sourceModelPrimaryKeyType %>('id') id: typeof <%= sourceModelClassName %>.prototype.<%= sourceModelPrimaryKey %>,
+    @param.path.<%= sourceModelPrimaryKeyType %>('<%= idPath %>') <%= idPath %>: <%= customSourceModelKey ? sourceModelPrimaryKeyType + ',' : 'typeof ' + sourceModelClassName + '.prototype.' + sourceModelPrimaryKey + ',' %>
     @requestBody({
       content: {
         'application/json': {
@@ -67,10 +90,17 @@ export class <%= controllerClassName %> {
       },
     }) <%= targetModelRequestBody %>: Omit<<%= targetModelClassName %>, '<%= targetModelPrimaryKey %>'>,
   ): Promise<<%= targetModelClassName %>> {
+    <%_ if (customSourceModelKey) { _%>
+      const object = await this.<%= paramTargetRepository %>.create(<%= targetModelRequestBody %>);
+      const through = {<%= sourceKeyOnThrough %>: <%= idPath %>, <%= targetKeyOnThrough %>: object.<%= customTargetModelKey %>};
+      await this.<%= paramThroughRepository %>.create(through);
+      return object;
+    <%_ } else { _%>
     return this.<%= paramSourceRepository %>.<%= relationPropertyName %>(id).create(<%= targetModelRequestBody %>);
+    <%_ } _%>
   }
 
-  @patch('/<%= sourceModelPath %>/{id}/<%= targetModelPath %>', {
+  @patch('/<%= sourceModelPath %>/{<%= idPath %>}/<%= targetModelPath %>', {
     responses: {
       '200': {
         description: '<%= sourceModelClassName %>.<%= targetModelClassName %> PATCH success count',
@@ -79,7 +109,7 @@ export class <%= controllerClassName %> {
     },
   })
   async patch(
-    @param.path.<%= sourceModelPrimaryKeyType %>('id') id: <%= sourceModelPrimaryKeyType %>,
+    @param.path.<%= sourceModelPrimaryKeyType %>('<%= idPath %>') <%= idPath %>: <%= sourceModelPrimaryKeyType %>,
     @requestBody({
       content: {
         'application/json': {
@@ -90,10 +120,17 @@ export class <%= controllerClassName %> {
     <%= targetModelRequestBody %>: Partial<<%= targetModelClassName %>>,
     @param.query.object('where', getWhereSchemaFor(<%= targetModelClassName %>)) where?: Where<<%= targetModelClassName %>>,
   ): Promise<Count> {
+    <%_ if (customSourceModelKey) { _%>
+      const keys: any[] = [];
+      const throughKeys: <%= throughModelClassName %>[] = await this.<%= paramThroughRepository %>.find({where: {<%= sourceKeyOnThrough %>: <%= idPath %>}});
+      throughKeys.forEach(throughKey => { keys.push(throughKey.<%= targetKeyOnThrough %>); });
+      return this.<%= paramTargetRepository %>.updateAll(<%= targetModelRequestBody %>, {...where, <%= customTargetModelKey %>: { inq: keys }});
+    <%_ } else { _%>
     return this.<%= paramSourceRepository %>.<%= relationPropertyName %>(id).patch(<%= targetModelRequestBody %>, where);
+    <%_ } _%>
   }
 
-  @del('/<%= sourceModelPath %>/{id}/<%= targetModelPath %>', {
+  @del('/<%= sourceModelPath %>/{<%= idPath %>}/<%= targetModelPath %>', {
     responses: {
       '200': {
         description: '<%= sourceModelClassName %>.<%= targetModelClassName %> DELETE success count',
@@ -102,9 +139,19 @@ export class <%= controllerClassName %> {
     },
   })
   async delete(
-    @param.path.<%= sourceModelPrimaryKeyType %>('id') id: <%= sourceModelPrimaryKeyType %>,
+    @param.path.<%= sourceModelPrimaryKeyType %>('<%= idPath %>') <%= idPath %>: <%= sourceModelPrimaryKeyType %>,
     @param.query.object('where', getWhereSchemaFor(<%= targetModelClassName %>)) where?: Where<<%= targetModelClassName %>>,
   ): Promise<Count> {
+    <%_ if (customSourceModelKey) { _%>
+      const keys: any[] = [];
+      const throughKeys: <%= throughModelClassName %>[] = await this.<%= paramThroughRepository %>.find({where: {<%= sourceKeyOnThrough %>: <%= idPath %>}});
+      throughKeys.forEach(throughKey => { keys.push(throughKey.<%= targetKeyOnThrough %>); });
+      return this.<%= paramTargetRepository %>.deleteAll({
+        ...where,
+        <%= customTargetModelKey %>: { inq: keys }
+      });
+    <%_ } else { _%>
     return this.<%= paramSourceRepository %>.<%= relationPropertyName %>(id).delete(where);
+    <%_ } _%>
   }
 }
