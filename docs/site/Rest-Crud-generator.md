@@ -29,6 +29,8 @@ src/datasources
 
 `--readonly` : _(Optional)_ create readonly APIs e.g find and count
 
+`--upsert` : _(Optional)_ add upsert endpoint
+
 ### Configuration file
 
 This generator supports a config file with the following format, see the
@@ -40,7 +42,8 @@ file.
   "datasource": "validDataSourceName",
   "model": "validModelName",
   "basePath": "/<base-path>",
-  "readonly": "<boolean>"
+  "readonly": "<boolean>",
+  "upsert": "<boolean>"
 }
 ```
 
@@ -79,6 +82,9 @@ The tool will prompt you for:
 
 - **Create readonly APIs.** _(readonly)_ If readonly had been supplied from the
   command line with `--readonly` option, the prompt is skipped.
+
+- **Create upsert API.** _(upsert)_ If upsert had been supplied from the command
+  line with `--upsert` option, the prompt is skipped.
 
 ### Output
 

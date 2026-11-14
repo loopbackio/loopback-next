@@ -225,6 +225,68 @@ describe('lb4 rest-crud', /** @this {Mocha.Suite} */ function () {
       assert.fileContent(expectedFile, /readonly: true/);
       assertApplicationTsFileUpdated();
     });
+
+    it('adds upsert: true for specific model(s)', async () => {
+      const options = {
+        basePath: '/multiWords',
+        datasource: 'dbmem',
+        model: 'MultiWord',
+        upsert: ['MultiWord'],
+      };
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withOptions(options);
+
+      const expectedFile = path.join(
+        sandbox.path,
+        MODEL_ENDPOINT_PATH,
+        'multi-word.rest-config.ts',
+      );
+      assert.file(expectedFile);
+      assert.fileContent(
+        expectedFile,
+        /import \{MultiWord\} from '\.\.\/models'/,
+      );
+      assert.fileContent(expectedFile, /upsert: true/);
+      assertApplicationTsFileUpdated();
+    });
+
+    it('adds upsert: true to all models', async () => {
+      const options = {
+        basePath: '/multiWords',
+        datasource: 'dbmem',
+        model: 'MultiWord',
+        upsert: ['MultiWord'],
+      };
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withOptions(options);
+
+      const expectedFile = path.join(
+        sandbox.path,
+        MODEL_ENDPOINT_PATH,
+        'multi-word.rest-config.ts',
+      );
+      assert.file(expectedFile);
+      assert.fileContent(
+        expectedFile,
+        /import \{MultiWord\} from '\.\.\/models'/,
+      );
+      assert.fileContent(expectedFile, /upsert: true/);
+      assertApplicationTsFileUpdated();
+    });
   });
 
   describe('all invalid parameters and usage', () => {
