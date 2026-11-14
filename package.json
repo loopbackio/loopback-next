@@ -40,7 +40,8 @@
     "pretest": "npm run clean && npm run build",
     "test": "node packages/build/bin/run-nyc npm run mocha",
     "mocha": "node packages/build/bin/run-mocha --lang en_US.UTF-8 \"{packages,extensions,examples}/*/dist/__tests__/**/*.js\" \"packages/{build,cli}/test/**/*.js\"",
-    "posttest": "npm run lint"
+    "posttest": "npm run lint",
+    "check-peer-deps": "node bin/check-peer-deps.js"
   },
   "config": {
     "commitizen": {

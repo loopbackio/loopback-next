@@ -39,8 +39,8 @@
     "templates"
   ],
   "peerDependencies": {
-    "@loopback/core": "^7.0.0",
-    "@loopback/rest": "^15.0.1"
+    "@loopback/core": "^8.0.0",
+    "@loopback/rest": "^16.0.0"
   },
   "dependencies": {
     "prom-client": "^14.2.0",
