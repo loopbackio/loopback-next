@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
+import {inherits} from 'util';
 import {
   Constructor,
   describeInjectedArguments,
@@ -103,6 +104,48 @@ describe('function argument injection', () => {
     }
     const meta = describeInjectedArguments(SubTestClass);
     expect(meta.map(m => m.bindingSelector)).to.deepEqual([]);
+  });
+
+  it('does not read the source of a class without a base class', () => {
+    let sourceRead = false;
+    class TestClass {
+      static toString() {
+        sourceRead = true;
+        return '';
+      }
+
+      constructor(@inject('foo') foo: string) {}
+    }
+
+    const meta = describeInjectedArguments(TestClass);
+    expect(meta.map(m => m.bindingSelector)).to.deepEqual(['foo']);
+    expect(sourceRead).to.be.false();
+  });
+
+  it('does not inherit ctor args through a linked prototype chain', () => {
+    class BaseClass {
+      constructor(@inject('foo') foo: string) {}
+    }
+
+    class TestClass {
+      constructor(foo: string) {}
+    }
+    Object.setPrototypeOf(TestClass.prototype, BaseClass.prototype);
+
+    const meta = describeInjectedArguments(TestClass);
+    expect(meta).to.deepEqual([]);
+  });
+
+  it('inherits ctor args for a function linked with util.inherits', () => {
+    class BaseClass {
+      constructor(@inject('foo') foo: string) {}
+    }
+
+    function testFunction() {}
+    inherits(testFunction, BaseClass);
+
+    const meta = describeInjectedArguments(testFunction);
+    expect(meta.map(m => m.bindingSelector)).to.deepEqual(['foo']);
   });
 
   // https://github.com/loopbackio/loopback-next/issues/2946
