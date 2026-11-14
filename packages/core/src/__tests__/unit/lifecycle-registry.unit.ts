@@ -11,6 +11,7 @@ import {
   injectable,
 } from '@loopback/context';
 import {expect} from '@loopback/testlab';
+import debugFactory from 'debug';
 import {promisify} from 'util';
 import {
   asLifeCycleObserver,
@@ -161,6 +162,24 @@ describe('LifeCycleRegistry', () => {
       'g2-1-start',
       'g2-2-start',
     ]);
+  });
+
+  it('getObserverGroupsByOrder() logs debug output when debug logging is enabled', async () => {
+    await givenLifeCycleRegistry();
+    givenObserver('obs1', 'g1');
+
+    const namespaces = debugFactory.disable();
+    const originalLog = debugFactory.log;
+    // Suppress output to keep test results clean
+    debugFactory.log = () => {};
+    debugFactory.enable('loopback:core:lifecycle');
+    try {
+      const groups = registry.getOrderedGroups();
+      expect(groups).to.containEql('g1');
+    } finally {
+      debugFactory.log = originalLog;
+      debugFactory.enable(namespaces);
+    }
   });
 
   function givenContext() {

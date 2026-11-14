@@ -221,5 +221,15 @@ describe('Authentication', () => {
         scopes: ['s1', 's2'],
       });
     });
+
+    it('throws an error when used on a property', () => {
+      expect(() => {
+        class TestClass {
+          @authorize({allowedRoles: ['ADMIN']})
+          prop: string;
+        }
+        return TestClass;
+      }).to.throw(/cannot be used on a property: TestClass\.prototype\.prop/);
+    });
   });
 });

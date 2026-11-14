@@ -47,6 +47,29 @@ describe('Application', () => {
         myAppConfig,
       );
     });
+
+    it('sets application metadata via setMetadata()', () => {
+      app = new Application();
+      app.setMetadata({name: 'my-app', version: '1.0.0', description: 'Test'});
+      const metadata = app.getSync(CoreBindings.APPLICATION_METADATA);
+      expect(metadata).to.deepEqual({
+        name: 'my-app',
+        version: '1.0.0',
+        description: 'Test',
+      });
+    });
+
+    it('overwrites application metadata when setMetadata() is called again', () => {
+      app = new Application();
+      app.setMetadata({name: 'first', version: '1.0.0', description: 'First'});
+      app.setMetadata({
+        name: 'second',
+        version: '2.0.0',
+        description: 'Second',
+      });
+      const metadata = app.getSync(CoreBindings.APPLICATION_METADATA);
+      expect(metadata).to.have.property('name', 'second');
+    });
   });
 
   describe('controller binding', () => {

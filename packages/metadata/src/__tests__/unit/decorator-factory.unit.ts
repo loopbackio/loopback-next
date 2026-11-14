@@ -884,3 +884,120 @@ describe('MethodParameterDecoratorFactory with invalid decorations', () => {
     );
   });
 });
+
+describe('DecoratorFactory base class abstract methods', () => {
+  // These tests exercise the "not implemented" guard paths in the base class.
+  // They are hit when a concrete subclass forgets to implement the required
+  // override, or when a subclass accidentally calls super.
+
+  it('mergeWithInherited() throws "not implemented" by default', () => {
+    // Extend the base factory minimally, without overriding mergeWithInherited
+    class StubFactory extends DecoratorFactory<object, object, ClassDecorator> {
+      mergeWithOwn(ownMetadata: object): object {
+        return ownMetadata ?? {};
+      }
+
+      create(): ClassDecorator {
+        return (_target: Function) => {};
+      }
+    }
+
+    const factory = new StubFactory('test', {});
+    expect(() =>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (factory as any).mergeWithInherited({}, class Foo {}),
+    ).to.throw(/mergeWithInherited\(\) is not implemented/);
+  });
+
+  it('mergeWithOwn() throws "not implemented" by default', () => {
+    class StubFactory extends DecoratorFactory<object, object, ClassDecorator> {
+      mergeWithInherited(inheritedMetadata: object): object {
+        return inheritedMetadata ?? {};
+      }
+
+      create(): ClassDecorator {
+        return (_target: Function) => {};
+      }
+    }
+
+    const factory = new StubFactory('test', {});
+    expect(() =>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (factory as any).mergeWithOwn({}, class Foo {}),
+    ).to.throw(/mergeWithOwn\(\) is not implemented/);
+  });
+
+  it('create() throws "not implemented" by default', () => {
+    class MinimalFactory extends DecoratorFactory<
+      object,
+      object,
+      ClassDecorator
+    > {
+      mergeWithInherited(inheritedMetadata: object): object {
+        return inheritedMetadata ?? {};
+      }
+
+      mergeWithOwn(ownMetadata: object): object {
+        return ownMetadata ?? {};
+      }
+    }
+
+    const factory = new MinimalFactory('test', {});
+    expect(() => factory.create()).to.throw(/create\(\) is not implemented/);
+  });
+
+  it('getTarget() returns undefined for non-object spec', () => {
+    // A null or primitive spec has no TARGET property — the else branch
+    // in getTarget() must return undefined.
+    const factory = new ClassDecoratorFactory<object>('test', {});
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((factory as any).getTarget('not-an-object')).to.be.undefined();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((factory as any).getTarget(42)).to.be.undefined();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((factory as any).getTarget(null)).to.be.undefined();
+  });
+});
+
+describe('MethodMultiDecoratorFactory own-method decoration', () => {
+  // Applies the decorator on a concrete method with no base class so that
+  // mergeWithOwn (not mergeWithInherited) is the only path exercised.
+  it('records metadata when decorating a method with no base class', () => {
+    function multiDecorator(spec: object): MethodDecorator {
+      return MethodMultiDecoratorFactory.createDecorator('test-multi', spec);
+    }
+
+    class StandaloneController {
+      @multiDecorator({a: 1})
+      myMethod() {}
+    }
+
+    const meta = Reflector.getOwnMetadata(
+      'test-multi',
+      StandaloneController.prototype,
+    );
+    expect(meta.myMethod).to.eql([{a: 1}]);
+  });
+
+  it('accumulates multiple decorators on the same method in a standalone class', () => {
+    function multiDecorator(spec: object): MethodDecorator {
+      return MethodMultiDecoratorFactory.createDecorator(
+        'test-multi-acc',
+        spec,
+      );
+    }
+
+    class StandaloneController {
+      @multiDecorator({b: 2})
+      @multiDecorator({a: 1})
+      myMethod() {}
+    }
+
+    const meta = Reflector.getOwnMetadata(
+      'test-multi-acc',
+      StandaloneController.prototype,
+    );
+    // Decorators run bottom-up, so {a:1} is applied first, then {b:2}
+    expect(meta.myMethod).to.eql([{a: 1}, {b: 2}]);
+  });
+});

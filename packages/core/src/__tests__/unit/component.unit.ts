@@ -313,6 +313,22 @@ describe('Component', () => {
       expect(bindings).to.have.length(1);
     });
 
+    it('skips a component instance that appears directly in its own components array', () => {
+      // Defensive guard: if the component instance is placed (via any cast) in
+      // its own `.components` array the loop should skip it to prevent
+      // infinite recursion.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const component: any = {};
+      component.components = [component];
+
+      // Should not throw or infinite-loop
+      mountComponent(app, component);
+
+      // Nothing was added via app.component() for the self-reference
+      const bindings = app.findByTag(CoreTags.COMPONENT);
+      expect(bindings).to.be.empty();
+    });
+
     it('mounts component with all artifact types', () => {
       class MyClass {}
       class MyProvider implements Provider<string> {

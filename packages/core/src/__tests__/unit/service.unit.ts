@@ -9,6 +9,7 @@ import {
   Context,
   ContextTags,
   injectable,
+  isDynamicValueProviderClass,
   Provider,
 } from '@loopback/context';
 import {expect} from '@loopback/testlab';
@@ -261,6 +262,36 @@ describe('Service', () => {
       ).to.be.rejectedWith(/Service class cannot be inferred from design type/);
     });
 
+    it('throws "No design-time type metadata found" for property with deleted design type', async () => {
+      @injectable({scope: BindingScope.SINGLETON})
+      class MyService {
+        getValue() {
+          return 'value';
+        }
+      }
+
+      class MyController {
+        @service()
+        public myService: MyService;
+      }
+
+      // Simulate missing emitDecoratorMetadata by deleting the design:type
+      // metadata that TypeScript emits for decorated properties.
+      // Note: design:type is stored under the raw Reflect key, not the
+      // namespaced 'loopback:design:type' key that Reflector uses.
+      Reflect.deleteMetadata(
+        'design:type',
+        MyController.prototype,
+        'myService',
+      );
+
+      ctx.bind('controllers.MyController').toClass(MyController);
+
+      await expect(
+        ctx.get<MyController>('controllers.MyController'),
+      ).to.be.rejectedWith(/No design-time type metadata found/);
+    });
+
     it('works with property injection', async () => {
       @injectable({scope: BindingScope.SINGLETON})
       class MyService {
@@ -476,6 +507,40 @@ describe('Service', () => {
 
       expect(binding.scope).to.equal(BindingScope.SINGLETON);
       expect(Array.from(binding.tagNames)).to.containEql('custom-tag');
+    });
+
+    it('trims Provider suffix from a DynamicValueProvider class name', () => {
+      // A DynamicValueProvider has a static `value()` method rather than
+      // implementing the Provider interface.
+      class MyDynamicServiceProvider {
+        static value() {
+          return 'dynamic-value';
+        }
+      }
+
+      // Confirm the helper recognises it as a dynamic value provider
+      expect(
+        isDynamicValueProviderClass(MyDynamicServiceProvider),
+      ).to.be.true();
+
+      const binding = createServiceBinding(MyDynamicServiceProvider);
+
+      // The binding key should have the Provider suffix stripped
+      expect(binding.key).to.match(/MyDynamicService$/);
+    });
+
+    it('preserves name for a DynamicValueProvider when a custom name is supplied', () => {
+      class MyDynamicServiceProvider {
+        static value() {
+          return 'dynamic-value';
+        }
+      }
+
+      const binding = createServiceBinding(MyDynamicServiceProvider, {
+        name: 'custom-dynamic',
+      });
+
+      expect(binding.key).to.equal('services.custom-dynamic');
     });
   });
 
