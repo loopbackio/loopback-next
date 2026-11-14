@@ -149,9 +149,11 @@ export function defineCrudRestController<
   };
 
   @api({basePath: options.basePath, paths: {}})
-  class ReadonlyRestControllerImpl
-    implements CrudRestController<T, IdType, IdName>
-  {
+  class ReadonlyRestControllerImpl implements CrudRestController<
+    T,
+    IdType,
+    IdName
+  > {
     constructor(
       public readonly repository: EntityCrudRepository<T, IdType, Relations>,
     ) {}
@@ -307,10 +309,14 @@ export function defineCrudRestController<
     'controllerClass',
     `return class ${controllerName} extends controllerClass {}`,
   );
-  let controllerImplementation = ReadonlyRestControllerImpl;
-  if (options.readonly) controllerImplementation = ReadonlyRestControllerImpl;
-  if (options.upsert)
+
+  let controllerImplementation = options.readonly
+    ? ReadonlyRestControllerImpl
+    : CrudRestControllerImpl;
+
+  if (options.upsert) {
     controllerImplementation = CrudRestControllerWithUpsertImpl;
+  }
 
   const controller = defineNamedController(controllerImplementation);
   assert.equal(controller.name, controllerName);

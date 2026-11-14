@@ -49,6 +49,15 @@ export class CrudConnectorStub implements CrudConnector {
     return Promise.resolve(entity);
   }
 
+  upsert(
+    modelClass: Class<Entity>,
+    entity: EntityData,
+    options?: Options,
+  ): Promise<EntityData> {
+    this.entities.push(entity);
+    return Promise.resolve(entity);
+  }
+
   find(
     modelClass: Class<Entity>,
     filter?: Filter,

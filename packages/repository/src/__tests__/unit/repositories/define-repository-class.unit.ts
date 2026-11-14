@@ -98,6 +98,12 @@ describe('RepositoryClass builder', () => {
     ): Promise<M> {
       throw new Error('Method not implemented.');
     }
+    upsert(
+      dataObject: DataObject<M>,
+      options?: AnyObject | undefined,
+    ): Promise<M> {
+      throw new Error('Method not implemented.');
+    }
     createAll(
       dataObjects: DataObject<M>[],
       options?: AnyObject | undefined,

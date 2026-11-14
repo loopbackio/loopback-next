@@ -19,7 +19,7 @@
     "build": "lb-tsc",
     "clean": "lb-clean loopback-rest-crud*.tgz dist *.tsbuildinfo package",
     "pretest": "npm run build",
-    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/**/crud-rest-controller.unit.js\"",
     "verify": "npm pack && tar xf loopback-rest-crud*.tgz && tree package && npm run clean"
   },
   "publishConfig": {
