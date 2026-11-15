@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/build@13.0.0...@loopback/build@13.0.1) (2026-11-15)
+
+
+### Bug Fixes
+
+* **build:** resolve CLI bins in packages that define an exports map ([9c5cd46](https://github.com/loopbackio/loopback-next/commit/9c5cd46b9011b6f09d1f32a37a57cbb2afe2a718))
+
+
+
+
+
 # [13.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/build@12.0.15...@loopback/build@13.0.0) (2026-10-23)
 
 

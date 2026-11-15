@@ -1,7 +1,7 @@
 {
   "name": "@loopback/booter-lb3app",
   "description": "A booter component for LoopBack 3 applications to expose their REST API via LoopBack 4",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "keywords": [
     "LoopBack",
     "LB3",
@@ -51,13 +51,13 @@
     "tslib": "^2.9.1"
   },
   "devDependencies": {
-    "@loopback/boot": "^9.0.0",
-    "@loopback/build": "^13.0.0",
-    "@loopback/core": "^8.0.0",
+    "@loopback/boot": "^9.0.1",
+    "@loopback/build": "^13.0.1",
+    "@loopback/core": "^8.0.1",
     "@loopback/eslint-config": "^17.0.0",
-    "@loopback/repository": "^9.0.0",
-    "@loopback/rest": "^16.0.0",
-    "@loopback/testlab": "^9.0.0",
+    "@loopback/repository": "^9.0.1",
+    "@loopback/rest": "^16.0.1",
+    "@loopback/testlab": "^9.0.1",
     "@types/debug": "^4.1.13",
     "@types/lodash": "^4.17.27",
     "@types/node": "^20.19.43",

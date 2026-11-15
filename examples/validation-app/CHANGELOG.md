@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/example-validation-app@8.0.0...@loopback/example-validation-app@8.0.1) (2026-11-15)
+
+
+### Bug Fixes
+
+* **example-validation-app:** ignore .eslintrc.js when linting ([7175aac](https://github.com/loopbackio/loopback-next/commit/7175aacc73e271680f45df93e36f0a7d98ac45cf))
+
+
+
+
+
 # [8.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/example-validation-app@7.0.16...@loopback/example-validation-app@8.0.0) (2026-10-23)
 
 

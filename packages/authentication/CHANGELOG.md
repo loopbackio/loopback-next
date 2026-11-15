@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/authentication@13.0.0...@loopback/authentication@13.0.1) (2026-11-15)
+
+**Note:** Version bump only for package @loopback/authentication
+
+
+
+
+
 # [13.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/authentication@12.0.17...@loopback/authentication@13.0.0) (2026-10-23)
 
 

@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-greeting-app",
   "description": "An example greeting application for LoopBack 4",
-  "version": "9.0.0",
+  "version": "9.0.1",
   "keywords": [
     "loopback",
     "loopback-application"
@@ -48,18 +48,18 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/boot": "^9.0.0",
-    "@loopback/core": "^8.0.0",
-    "@loopback/example-greeter-extension": "^9.0.0",
-    "@loopback/rest": "^16.0.0",
+    "@loopback/boot": "^9.0.1",
+    "@loopback/core": "^8.0.1",
+    "@loopback/example-greeter-extension": "^9.0.1",
+    "@loopback/rest": "^16.0.1",
     "chalk": "^4.1.2",
     "debug": "^4.4.3",
     "tslib": "^2.9.1"
   },
   "devDependencies": {
-    "@loopback/build": "^13.0.0",
+    "@loopback/build": "^13.0.1",
     "@loopback/eslint-config": "^17.0.0",
-    "@loopback/testlab": "^9.0.0",
+    "@loopback/testlab": "^9.0.1",
     "@types/debug": "4.1.13",
     "@types/node": "^20.19.43",
     "eslint": "^8.57.1",

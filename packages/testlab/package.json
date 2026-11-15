@@ -1,7 +1,7 @@
 {
   "name": "@loopback/testlab",
   "description": "A collection of test utilities we use to write LoopBack tests.",
-  "version": "9.0.0",
+  "version": "9.0.1",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -48,7 +48,7 @@
     "tslib": "^2.9.1"
   },
   "devDependencies": {
-    "@loopback/build": "^13.0.0",
+    "@loopback/build": "^13.0.1",
     "@loopback/eslint-config": "^17.0.0",
     "@types/node": "^20.19.43"
   }

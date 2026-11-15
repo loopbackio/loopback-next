@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/example-express-composition@9.0.0...@loopback/example-express-composition@9.0.1) (2026-11-15)
+
+
+### Bug Fixes
+
+* **example-express-composition:** ignore .eslintrc.js when linting ([d81f1e4](https://github.com/loopbackio/loopback-next/commit/d81f1e4b3d06c2b5d735df1bd182653730e96fc0))
+
+
+
+
+
 # [9.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/example-express-composition@8.0.16...@loopback/example-express-composition@9.0.0) (2026-10-23)
 
 
