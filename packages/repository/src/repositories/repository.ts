@@ -81,6 +81,15 @@ export interface CrudRepository<
   create(dataObject: DataObject<T>, options?: Options): Promise<T>;
 
   /**
+   * Update an existing entity or Create if it does not exist
+   * @param modelClass - The model class
+   * @param entity - The entity instance or data
+   * @param options - Options for the operation
+   * @returns A promise of the entity created
+   */
+  upsert?(dataObject: DataObject<T>, options?: Options): Promise<T>;
+
+  /**
    * Create all records
    * @param dataObjects - An array of data to be created
    * @param options - Options for the operations
@@ -286,6 +295,15 @@ export class CrudRepositoryImpl<
     return this.toModel(
       this.connector.create(this.entityClass, entity, options),
     );
+  }
+
+  upsert(entity: DataObject<T>, options?: Options): Promise<T> {
+    if (this.connector.upsert) {
+      return this.toModel(
+        this.connector.upsert(this.entityClass, entity, options),
+      );
+    }
+    return this.save(entity, options);
   }
 
   createAll(entities: DataObject<T>[], options?: Options): Promise<T[]> {

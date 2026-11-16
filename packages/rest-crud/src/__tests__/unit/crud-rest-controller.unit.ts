@@ -45,4 +45,46 @@ describe('defineCrudRestController', () => {
     // It must generate read methods
     expect(CrudRestController.prototype.find).not.equal(undefined);
   });
+
+  it('should generate controller based on Model name with upsert API', async () => {
+    @model()
+    class Product extends Entity {
+      @property({id: true})
+      id: number;
+    }
+
+    const CrudRestController = defineCrudRestController<
+      Product,
+      typeof Product.prototype.id,
+      'id'
+    >(Product, {basePath: '/products', upsert: true});
+
+    expect(CrudRestController.name).to.equal('ProductController');
+    // It must generate upsert endpoint
+    expect(CrudRestController.prototype.upsert).not.equal(undefined);
+    // It must generate other rest-crud endpoints too
+    expect(CrudRestController.prototype.create).not.equal(undefined);
+    expect(CrudRestController.prototype.find).not.equal(undefined);
+  });
+
+  it('should not generate controller based on Model name with upsert API', async () => {
+    @model()
+    class Product extends Entity {
+      @property({id: true})
+      id: number;
+    }
+
+    const CrudRestController = defineCrudRestController<
+      Product,
+      typeof Product.prototype.id,
+      'id'
+    >(Product, {basePath: '/products', upsert: false});
+
+    expect(CrudRestController.name).to.equal('ProductController');
+    // It must not generate upsert endpoint
+    expect(CrudRestController.prototype.upsert).to.equal(undefined);
+    // It must generate other rest-crud endpoints too
+    expect(CrudRestController.prototype.create).not.equal(undefined);
+    expect(CrudRestController.prototype.find).not.equal(undefined);
+  });
 });

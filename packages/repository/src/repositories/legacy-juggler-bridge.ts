@@ -492,6 +492,12 @@ export class DefaultCrudRepository<
     return this.toEntity(model);
   }
 
+  async upsert(entity: DataObject<T>, options?: Options): Promise<T> {
+    const data = await this.entityToData(entity, options);
+    const model = await ensurePromise(this.modelClass.upsert(data, options));
+    return this.toEntity(model);
+  }
+
   async createAll(entities: DataObject<T>[], options?: Options): Promise<T[]> {
     // perform persist hook
     const data = await Promise.all(
