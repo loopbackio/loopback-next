@@ -16,6 +16,7 @@ const fse = require('fs-extra');
 const pkgJson = require('@npmcli/package-json');
 const mapWorkspaces = require('@npmcli/map-workspaces');
 const {runMain} = require('./script-util');
+const checkPeerDependencies = require('./check-peer-deps');
 
 function isTypeScriptPackage(location) {
   return fse.existsSync(path.join(location, 'tsconfig.json'));
@@ -210,6 +211,7 @@ async function checkPackagesMetadata() {
       checkMonorepoFile(packages, rootPath),
       checkCodeOwnersFile(packages, rootPath),
       checkPkgsPackageJson(packages, rootPkg),
+      checkPeerDependencies(rootPath),
     ])
   ).flat();
 
