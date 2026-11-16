@@ -552,6 +552,213 @@ export class Appointment extends Entity {
 `;
 
 
+exports[`lb4 relation HasManyThrough generates model relation with custom reference keys with --config has correct default foreign keys 1`] = `
+import {Entity, model, property} from '@loopback/repository';
+
+@model()
+export class OrderCustomRefKey extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    default: 0,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+  })
+  customerCode?: string;
+
+  @property({
+    type: 'string',
+  })
+  productSku?: string;
+
+  @property({
+    type: 'number',
+  })
+  quantity?: number;
+
+  constructor(data?: Partial<OrderCustomRefKey>) {
+    super(data);
+  }
+}
+
+`;
+
+
+exports[`lb4 relation HasManyThrough generates model relation with custom reference keys with --config has correct imports and relation name products 1`] = `
+import {
+  Count,
+  CountSchema,
+  Filter,
+  repository,
+  Where,
+} from '@loopback/repository';
+  import {
+  del,
+  get,
+  getModelSchemaRef,
+  getWhereSchemaFor,
+  param,
+  patch,
+  post,
+  requestBody,
+} from '@loopback/rest';
+import {
+Customer8,
+OrderCustomRefKey,
+Product,
+} from '../models';
+import {
+ProductRepository,
+OrderCustomRefKeyRepository,
+Customer8Repository,
+} from '../repositories';
+
+export class Customer8ProductController {
+  constructor(
+    @repository(Customer8Repository) protected customer8Repository: Customer8Repository,
+    @repository(ProductRepository) protected productRepository: ProductRepository,
+    @repository(OrderCustomRefKeyRepository) protected orderCustomRefKeyRepository: OrderCustomRefKeyRepository,
+  ) { }
+
+  @get('/customer8s/{customerCode}/products', {
+    responses: {
+      '200': {
+        description: 'Array of Customer8 has many Product through OrderCustomRefKey',
+        content: {
+          'application/json': {
+            schema: {type: 'array', items: getModelSchemaRef(Product)},
+          },
+        },
+      },
+    },
+  })
+  async find(
+    @param.path.string('customerCode') customerCode: string,
+    @param.query.object('filter') filter?: Filter<Product>,
+  ): Promise<Product[]> {
+      const keys: any[] = [];
+      const throughKeys: OrderCustomRefKey[] = await this.orderCustomRefKeyRepository.find({where: {customerCode: customerCode}});
+      throughKeys.forEach(throughKey => { keys.push(throughKey.productSku); });
+      return this.productRepository.find({...filter, where: { sku: { inq: keys } }});
+  }
+
+  @post('/customer8s/{customerCode}/products', {
+    responses: {
+      '200': {
+        description: 'create a Product model instance',
+        content: {'application/json': {schema: getModelSchemaRef(Product)}},
+      },
+    },
+  })
+  async create(
+    @param.path.string('customerCode') customerCode: string,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Product, {
+            title: 'NewProductInCustomer8',
+            exclude: ['id'],
+          }),
+        },
+      },
+    }) product: Omit<Product, 'id'>,
+  ): Promise<Product> {
+      const object = await this.productRepository.create(product);
+      const through = {customerCode: customerCode, productSku: object.sku};
+      await this.orderCustomRefKeyRepository.create(through);
+      return object;
+  }
+
+  @patch('/customer8s/{customerCode}/products', {
+    responses: {
+      '200': {
+        description: 'Customer8.Product PATCH success count',
+        content: {'application/json': {schema: CountSchema}},
+      },
+    },
+  })
+  async patch(
+    @param.path.string('customerCode') customerCode: string,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Product, {partial: true}),
+        },
+      },
+    })
+    product: Partial<Product>,
+    @param.query.object('where', getWhereSchemaFor(Product)) where?: Where<Product>,
+  ): Promise<Count> {
+      const keys: any[] = [];
+      const throughKeys: OrderCustomRefKey[] = await this.orderCustomRefKeyRepository.find({where: {customerCode: customerCode}});
+      throughKeys.forEach(throughKey => { keys.push(throughKey.productSku); });
+      return this.productRepository.updateAll(product, {...where, sku: { inq: keys }});
+  }
+
+  @del('/customer8s/{customerCode}/products', {
+    responses: {
+      '200': {
+        description: 'Customer8.Product DELETE success count',
+        content: {'application/json': {schema: CountSchema}},
+      },
+    },
+  })
+  async delete(
+    @param.path.string('customerCode') customerCode: string,
+    @param.query.object('where', getWhereSchemaFor(Product)) where?: Where<Product>,
+  ): Promise<Count> {
+      const keys: any[] = [];
+      const throughKeys: OrderCustomRefKey[] = await this.orderCustomRefKeyRepository.find({where: {customerCode: customerCode}});
+      throughKeys.forEach(throughKey => { keys.push(throughKey.productSku); });
+      return this.productRepository.deleteAll({
+        ...where,
+        sku: { inq: keys }
+      });
+  }
+}
+
+`;
+
+
+exports[`lb4 relation HasManyThrough generates model relation with custom reference keys with --config has correct imports and relation name products 2`] = `
+import {Entity, model, property, hasMany} from '@loopback/repository';
+import {Product} from './product.model';
+import {OrderCustomRefKey} from './order-custom-ref-key.model';
+
+@model()
+export class Customer8 extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    default: 0,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+    index: {unique: true},
+  })
+  customerCode?: string;
+
+  @property({
+    type: 'string',
+  })
+  name?: string;
+
+  @hasMany(() => Product, {customReferenceKeyFrom: 'customerCode', customReferenceKeyTo: 'sku', through: {model: () => OrderCustomRefKey, keyFrom: 'customerCode', keyTo: 'productSku'}})
+  products: Product[];
+
+  constructor(data?: Partial<Customer8>) {
+    super(data);
+  }
+}
+
+`;
+
+
 exports[`lb4 relation HasManyThrough generates model relation with custom relation name answers {"relationType":"hasManyThrough","sourceModel":"Doctor","destinationModel":"Patient","throughModel":"Appointment","relationName":"myPatients"} relation name should be myPatients 1`] = `
 import {Entity, model, property, hasMany} from '@loopback/repository';
 import {Patient} from './patient.model';

@@ -121,7 +121,6 @@ exports.givenLBProject = function (rootDir, options = {}) {
     const repoPath = path.join(rootDir, '/src/repositories/bar.repository.ts');
     fse.writeFileSync(repoPath, '--DUMMY VALUE--');
   }
-
   if (sandBoxFiles.length > 0) {
     for (const theFile of sandBoxFiles) {
       const fullPath = path.join(rootDir, theFile.path, theFile.file);
