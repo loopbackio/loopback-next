@@ -99,6 +99,10 @@ module.exports = class BelongsToRelationGenerator extends (
       sourceModel,
     );
     const sourceClass = relationUtils.getClassObj(sourceFile, sourceModel);
+    const modelPropertyMetadata = relationUtils.getPropertyMetadata(
+      sourceClass,
+      foreignKeyName,
+    );
     // this checks if the foreign key already exists, so the 2nd param should be foreignKeyName
     relationUtils.doesRelationExist(sourceClass, foreignKeyName);
 
@@ -109,6 +113,7 @@ module.exports = class BelongsToRelationGenerator extends (
       foreignKeyName,
       fktype,
       keyTo,
+      modelPropertyMetadata,
     );
 
     relationUtils.addProperty(sourceClass, modelProperty);
@@ -130,36 +135,54 @@ module.exports = class BelongsToRelationGenerator extends (
     foreignKeyName,
     fktype,
     keyTo,
+    modelPropertyMetadata,
   ) {
-    const keyToOption = keyTo ? `, keyTo: '${keyTo}'` : '';
-
-    // checks if relation name is customized
-    let relationDecorator = [
-      {
-        name: 'belongsTo',
-        arguments: [
-          keyTo
-            ? `() =>  ${className}, {keyTo: '${keyTo}'}`
-            : `() =>  ${className}`,
-        ],
-      },
-    ];
-    // already checked if the relation name is the same as the source key before
+    const decoratorArguments = [`() =>  ${className}`];
+    const relationOptions = [];
+    let cleanedPropertyMetadata = '';
+    if (keyTo) {
+      relationOptions.push(`keyTo: '${keyTo}'`);
+    }
     if (defaultRelationName !== relationName) {
-      relationDecorator = [
+      relationOptions.push(`name: '${relationName}'`);
+    }
+    if (relationOptions.length) {
+      decoratorArguments.push(`{${relationOptions.join(', ')}}`);
+    }
+    if (modelPropertyMetadata && modelPropertyMetadata.trim() !== '') {
+      // Strip outer braces if modelPropertyMetadata is passed as a braced string like "{ nullable: true }"
+      cleanedPropertyMetadata = modelPropertyMetadata
+        .replace(/^\{|\}$/g, '')
+        .trim();
+    }
+    if (cleanedPropertyMetadata) {
+      if (decoratorArguments.length === 1) {
+        decoratorArguments.push('{}');
+      }
+      decoratorArguments.push(`{${cleanedPropertyMetadata}}`);
+    }
+    let isPropertyOptional = false;
+    if (
+      modelPropertyMetadata &&
+      modelPropertyMetadata.includes('nullable: true')
+    ) {
+      isPropertyOptional = true;
+    }
+    const cleanFktype = fktype.replace(/\s*\|\s*undefined/g, '').trim();
+    const property = {
+      decorators: [
         {
           name: 'belongsTo',
-          arguments: [
-            `() =>  ${className}, {name: '${relationName}'${keyToOption}}`,
-          ],
+          arguments: decoratorArguments,
         },
-      ];
-    }
-    return {
-      decorators: relationDecorator,
+      ],
       name: foreignKeyName,
-      type: fktype,
+      type: cleanFktype,
     };
+    if (isPropertyOptional) {
+      property.hasQuestionToken = isPropertyOptional;
+    }
+    return property;
   }
 
   _getRepositoryRequiredImports(dstModelClassName, dstRepositoryClassName) {

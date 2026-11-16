@@ -96,6 +96,10 @@ module.exports = class HasOneRelationGenerator extends BaseRelationGenerator {
       sourceModel,
     );
     const sourceClass = relationUtils.getClassObj(sourceFile, sourceModel);
+    const modelPropertyMetadata = relationUtils.getPropertyMetadata(
+      sourceClass,
+      foreignKeyName,
+    );
     relationUtils.doesRelationExist(sourceClass, relationName);
 
     modelProperty = this.getHasOne(
@@ -103,6 +107,7 @@ module.exports = class HasOneRelationGenerator extends BaseRelationGenerator {
       relationName,
       isDefaultForeignKey,
       foreignKeyName,
+      modelPropertyMetadata,
     );
 
     relationUtils.addProperty(sourceClass, modelProperty);
@@ -136,27 +141,58 @@ module.exports = class HasOneRelationGenerator extends BaseRelationGenerator {
     }
   }
 
-  getHasOne(className, relationName, isDefaultForeignKey, foreignKeyName) {
-    let relationDecorator = [
-      {
-        name: 'hasOne',
-        arguments: [`() => ${className}, {keyTo: '${foreignKeyName}'}`],
-      },
-    ];
-    if (isDefaultForeignKey) {
-      relationDecorator = [
-        {
-          name: 'hasOne',
-          arguments: [`() => ${className}`],
-        },
-      ];
+  getHasOne(
+    className,
+    relationName,
+    isDefaultForeignKey,
+    foreignKeyName,
+    modelPropertyMetadata,
+  ) {
+    const decoratorArguments = [`() => ${className}`];
+    const relationOptions = [];
+
+    if (!isDefaultForeignKey) {
+      relationOptions.push(`keyTo: '${foreignKeyName}'`);
+    }
+    if (relationOptions.length) {
+      decoratorArguments.push(`{${relationOptions.join(', ')}}`);
     }
 
-    return {
-      decorators: relationDecorator,
+    let propertyDetailOption = '';
+    if (modelPropertyMetadata && modelPropertyMetadata.trim() !== '') {
+      propertyDetailOption = modelPropertyMetadata
+        .replace(/^\{|\}$/g, '')
+        .trim();
+    }
+    if (propertyDetailOption) {
+      if (decoratorArguments.length === 1) {
+        decoratorArguments.push('{}');
+      }
+      decoratorArguments.push(`{${propertyDetailOption}}`);
+    }
+    let isPropertyOptional = false;
+    if (
+      modelPropertyMetadata &&
+      modelPropertyMetadata.includes('nullable: true')
+    ) {
+      isPropertyOptional = true;
+    }
+    const cleanClassName = className.replace(/\s*\|\s*undefined/g, '').trim();
+    const property = {
+      decorators: [
+        {
+          name: 'hasOne',
+          arguments: decoratorArguments,
+        },
+      ],
       name: relationName,
-      type: className,
+      type: `${cleanClassName}`,
     };
+
+    if (isPropertyOptional) {
+      property.hasQuestionToken = isPropertyOptional;
+    }
+    return property;
   }
 
   _getRepositoryRequiredImports(dstModelClassName, dstRepositoryClassName) {

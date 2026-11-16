@@ -150,6 +150,29 @@ exports.getPropertyType = function (classObj, propertyName) {
 };
 
 /**
+ * Get property details in class.
+ *
+ * @param {classObj}
+ * @param {propertyName} string
+ *
+ * @returns string
+ */
+
+exports.getPropertyMetadata = function (classObj, propertyName) {
+  propertyName = utils.camelCase(propertyName);
+  const property = classObj.getProperty(propertyName);
+  if (!property) return '';
+
+  const decorators = property.getDecorators();
+  if (decorators.length === 0) return '';
+
+  const firstArg = decorators[0].getArguments()[0];
+  if (!firstArg) return '';
+
+  return firstArg.getText();
+};
+
+/**
  * Validate if property with specific type exist in class.
  *
  * @param {classObj}
