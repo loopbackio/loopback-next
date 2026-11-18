@@ -26,7 +26,7 @@ The documentation website is https://loopback.io/doc/en/lb4/.
 Learn about the latest and greatest
 [features and technologies in LoopBack 4](https://loopback.io/doc/en/lb4/Crafting-LoopBack-4.html)
 by using it for your next project. Start by having a look at
-[Getting Started](https://loopback.io/doc/en/lb4/Getting-started.html).
+[Getting Started](https://loopback.io/getting-started.html).
 
 Check the [API documentation](https://loopback.io/doc/en/lb4/apidocs.index.html)
 for all the API usages in each package.
@@ -63,7 +63,7 @@ npx -p @loopback/cli lb app
 ```
 
 To create your first LoopBack 4 application, see
-[Getting Started](http://loopback.io/doc/en/lb4/Getting-started.html).
+[Getting Started](https://loopback.io/getting-started.html).
 
 ## Documentation
 
