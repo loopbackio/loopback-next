@@ -57,53 +57,6 @@ export type ViewWithRelations = View & ViewRelations;
 `;
 
 
-exports[`lb4 discover integration model discovery discovers models with --relations 1`] = `
-import {Entity, model, property, belongsTo} from '@loopback/repository';
-
-@model({
-  settings: {
-    foreignKeys: {
-      doctorRel: {name: 'doctorRel', entity: 'Doctor', entityKey: 'id', foreignKey: 'reportsTo'}
-    }
-  }
-})
-export class Doctor extends Entity {
-  @property({
-    type: 'number',
-    scale: 0,
-    id: 1,
-  })
-  id?: number;
-
-  @property({
-    type: 'string',
-    length: 45,
-  })
-  name?: string;
-
-  @belongsTo(() => Doctor)
-  reportsTo?: number;
-
-  // Define well-known properties here
-
-  // Indexer property to allow additional data
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [prop: string]: any;
-
-  constructor(data?: Partial<Doctor>) {
-    super(data);
-  }
-}
-
-export interface DoctorRelations {
-  // describe navigational properties here
-}
-
-export type DoctorWithRelations = Doctor & DoctorRelations;
-
-`;
-
-
 exports[`lb4 discover integration model discovery does not mark id property as required based on optionalId option 1`] = `
 import {Entity, model, property} from '@loopback/repository';
 
@@ -162,22 +115,104 @@ export type TestWithRelations = Test & TestRelations;
 
 
 exports[`lb4 discover integration model discovery generate relations with --relations 1`] = `
-import {Entity, model, property, belongsTo} from '@loopback/repository';
-import {Doctor,Patient} from '.';
+import {inject} from '@loopback/core';
+import {repository, Filter} from '@loopback/repository';
+import {get, param, getModelSchemaRef} from '@loopback/rest';
+import {Appointment, Doctor} from '../models';
+import {AppointmentRepository, DoctorRepository} from '../repositories';
 
-@model({
-  settings: {
-    foreignKeys: {
-      doctorIdRel: {name: 'doctorIdRel', entity: 'Doctor', entityKey: 'id', foreignKey: 'doctorId'},
-      patientIdRel: {
-        name: 'patientIdRel',
-        entity: 'Patient',
-        entityKey: 'pid',
-        foreignKey: 'patientId'
-      }
-    }
+export class AppointmentDoctorController {
+  constructor(@repository(AppointmentRepository) public appointmentRepository: AppointmentRepository) {
   }
-})
+
+  @get('/appointments/{id}/doctor', {
+    responses: {
+      '200': {
+        description: 'Doctor belonging to Appointment',
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(Doctor),
+          },
+        },
+      },
+    },
+  })
+  async getDoctor(@param.path.number('id') id: typeof Appointment.prototype.id): Promise<Doctor> {
+    return this.appointmentRepository.doctorIdDoctor(id);
+  }
+}
+
+`;
+
+
+exports[`lb4 discover integration model discovery generate relations with --relations 2`] = `
+import {inject} from '@loopback/core';
+import {repository, Filter} from '@loopback/repository';
+import {get, param, getModelSchemaRef} from '@loopback/rest';
+import {Appointment, Patient} from '../models';
+import {AppointmentRepository, PatientRepository} from '../repositories';
+
+export class AppointmentPatientController {
+  constructor(@repository(AppointmentRepository) public appointmentRepository: AppointmentRepository) {
+  }
+
+  @get('/appointments/{id}/patient', {
+    responses: {
+      '200': {
+        description: 'Patient belonging to Appointment',
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(Patient),
+          },
+        },
+      },
+    },
+  })
+  async getPatient(@param.path.number('id') id: typeof Appointment.prototype.id): Promise<Patient> {
+    return this.appointmentRepository.patientIdPatient(id);
+  }
+}
+
+`;
+
+
+exports[`lb4 discover integration model discovery generate relations with --relations 3`] = `
+import {inject} from '@loopback/core';
+import {repository, Filter} from '@loopback/repository';
+import {get, param, getModelSchemaRef} from '@loopback/rest';
+import {Doctor} from '../models';
+import {DoctorRepository} from '../repositories';
+
+export class DoctorDoctorController {
+  constructor(@repository(DoctorRepository) public doctorRepository: DoctorRepository) {
+  }
+
+  @get('/doctors/{id}/doctor', {
+    responses: {
+      '200': {
+        description: 'Doctor belonging to Doctor',
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(Doctor),
+          },
+        },
+      },
+    },
+  })
+  async getDoctor(@param.path.number('id') id: typeof Doctor.prototype.id): Promise<Doctor> {
+    return this.doctorRepository.reportsToDoctor(id);
+  }
+}
+
+`;
+
+
+exports[`lb4 discover integration model discovery generate relations with --relations 4`] = `
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Doctor} from '../models/doctor.model';
+import {Patient} from '../models/patient.model';
+
+@model()
 export class Appointment extends Entity {
   @property({
     type: 'number',
@@ -189,10 +224,24 @@ export class Appointment extends Entity {
   })
   id?: number;
 
-  @belongsTo(() => Patient)
+  
+  @belongsTo(() => Patient, {name: 'patientIdPatient'}, {
+      type: 'number',
+      precision: 10,
+      scale: 0,
+      generated: 0,
+      mysql: {columnName: 'patientId', dataType: 'int', dataLength: null, dataPrecision: 10, dataScale: 0, nullable: 'Y', generated: 0},
+    })
   patientId?: number;
 
-  @belongsTo(() => Doctor)
+  
+  @belongsTo(() => Doctor, {name: 'doctorIdDoctor'}, {
+      type: 'number',
+      precision: 10,
+      scale: 0,
+      generated: 0,
+      mysql: {columnName: 'doctorId', dataType: 'int', dataLength: null, dataPrecision: 10, dataScale: 0, nullable: 'Y', generated: 0},
+    })
   doctorId?: number;
 
   // Define well-known properties here

@@ -96,7 +96,31 @@ const appointmentModel = path.join(
   sandbox.path,
   'src/models/appointment.model.ts',
 );
-const doctorModel = path.join(sandbox.path, 'src/models/doctor.model.ts');
+const doctorRepository = path.join(
+  sandbox.path,
+  'src/repositories/doctor.repository.ts',
+);
+const appointmentRepository = path.join(
+  sandbox.path,
+  'src/repositories/appointment.repository.ts',
+);
+const patientRepository = path.join(
+  sandbox.path,
+  'src/repositories/patient.repository.ts',
+);
+
+const doctorDoctorController = path.join(
+  sandbox.path,
+  'src/controllers/doctor-doctor.controller.ts',
+);
+const appointmentDoctorController = path.join(
+  sandbox.path,
+  'src/controllers/appointment-doctor.controller.ts',
+);
+const appointmentPatientController = path.join(
+  sandbox.path,
+  'src/controllers/appointment-patient.controller.ts',
+);
 
 const defaultExpectedIndexFile = path.join(sandbox.path, 'src/models/index.ts');
 const movedExpectedTestModel = path.join(sandbox.path, 'src/test.model.ts');
@@ -111,6 +135,7 @@ describe('lb4 discover integration', () => {
     beforeEach('reset sandbox', async () => {
       await sandbox.reset();
       await sandbox.mkdir('dist/datasources');
+      await sandbox.mkdir('src/datasources');
     });
 
     it('generates all models without prompts using --all --dataSource', /** @this {Mocha.Context} */ async function () {
@@ -212,7 +237,9 @@ describe('lb4 discover integration', () => {
       assert.file(defaultExpectedTestModel);
       expectFileToMatchSnapshot(defaultExpectedTestModel);
     });
-    it('generate relations with --relations', async () => {
+
+    it('generate relations with --relations', /** @this {Mocha.Context} */ async function () {
+      this.timeout(20000);
       await testUtils
         .executeGenerator(generator)
         .inDir(sandbox.path, () =>
@@ -221,22 +248,20 @@ describe('lb4 discover integration', () => {
           }),
         )
         .withOptions(relationsSetTrue);
+      assert.file(appointmentRepository);
+      assert.file(patientRepository);
+      assert.file(doctorRepository);
+      assert.file(appointmentDoctorController);
+      assert.file(appointmentPatientController);
+      assert.file(doctorDoctorController);
+      expectFileToMatchSnapshot(appointmentDoctorController);
+      expectFileToMatchSnapshot(appointmentPatientController);
+      expectFileToMatchSnapshot(doctorDoctorController);
       assert.file(appointmentModel);
       expectFileToMatchSnapshot(appointmentModel);
     });
-    it('discovers models with --relations', async () => {
-      await testUtils
-        .executeGenerator(generator)
-        .inDir(sandbox.path, () =>
-          testUtils.givenLBProject(sandbox.path, {
-            additionalFiles: SANDBOX_FILES,
-          }),
-        )
-        .withOptions(relationsSetTrue);
-      assert.file(doctorModel);
-      expectFileToMatchSnapshot(doctorModel);
-    });
   });
+
   it('generates specific models without prompts using --models', async () => {
     await testUtils
       .executeGenerator(generator)

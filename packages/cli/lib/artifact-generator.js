@@ -10,6 +10,8 @@ const utils = require('./utils');
 const path = require('path');
 const chalk = require('chalk');
 const g = require('./globalize');
+const {discoverRepositories} = require('./repository-discoverer');
+const {discoverRelations} = require('./relation-discoverer');
 
 module.exports = class ArtifactGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -123,6 +125,17 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
 
     if (this._isGenerationSuccessful()) {
       await this._updateIndexFiles();
+      // if discovery includes relation discovery
+      if (this.options.relations) {
+        await discoverRepositories(
+          this.artifactInfo.repositoryOptions,
+          this.artifactInfo.projectRoot,
+        );
+        await discoverRelations(
+          this.artifactInfo.relationConfigs,
+          this.artifactInfo.projectRoot,
+        );
+      }
 
       const classes = this.artifactInfo.name
         .split(this.classNameSeparator)
