@@ -401,6 +401,25 @@ describe('model decorator', () => {
         expect(meta.items).to.eql({type: Array, itemType: Product});
       });
 
+      it('"@property.array" allows nullable array properties', () => {
+        @model()
+        class TestModel {
+          @property.array(String)
+          names: string[] | null;
+
+          @property.array(Product)
+          items: Product[] | undefined;
+        }
+
+        const meta =
+          MetadataInspector.getAllPropertyMetadata(
+            MODEL_PROPERTIES_KEY,
+            TestModel.prototype,
+          ) ?? /* istanbul ignore next */ {};
+        expect(meta.names).to.eql({type: Array, itemType: String});
+        expect(meta.items).to.eql({type: Array, itemType: Product});
+      });
+
       it('throws when @property.array is used on a non-array property', () => {
         expect.throws(
           () => {
