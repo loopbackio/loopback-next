@@ -59,7 +59,7 @@
     "@loopback/rest": "^16.0.1",
     "@loopback/rest-explorer": "^9.0.1",
     "@loopback/service-proxy": "^9.0.1",
-    "loopback-connector-rest": "^7.0.4",
+    "loopback-connector-rest": "^7.0.5",
     "tslib": "^2.9.1"
   },
   "devDependencies": {
