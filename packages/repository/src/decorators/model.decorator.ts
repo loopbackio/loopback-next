@@ -151,7 +151,10 @@ export namespace property {
         target,
         propertyName,
       );
-      if (propType !== Array) {
+      // TypeScript emits `Object` as the design type for union types such as
+      // `string[] | null` or `string[] | undefined`, so we cannot tell whether
+      // the property is an array in that case
+      if (propType !== Array && propType !== Object) {
         throw new Error(ERR_PROP_NOT_ARRAY);
       } else {
         property(
