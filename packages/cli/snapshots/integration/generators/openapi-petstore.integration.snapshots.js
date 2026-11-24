@@ -218,12 +218,22 @@ pulvinar elit eu, euismod sapien.
   /**
    * Creates a new pet in the store. Duplicates are allowed
    *
+   * @param contentType
    * @param _requestBody Pet to add to the store
    * @returns pet response
    */
   @operation('post', '/pets', {
   description: 'Creates a new pet in the store.  Duplicates are allowed',
   operationId: 'addPet',
+  parameters: [
+    {
+      name: 'content-type',
+      in: 'header',
+      schema: {
+        type: 'string',
+      },
+    },
+  ],
   requestBody: {
     description: 'Pet to add to the store',
     required: true,
@@ -258,7 +268,13 @@ pulvinar elit eu, euismod sapien.
     },
   },
 })
-  async addPet(@requestBody({
+  async addPet(@param({
+  name: 'content-type',
+  in: 'header',
+  schema: {
+    type: 'string',
+  },
+}) contentType: string | undefined, @requestBody({
   description: 'Pet to add to the store',
   required: true,
   content: {
