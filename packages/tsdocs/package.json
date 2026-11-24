@@ -51,7 +51,7 @@
     "@lerna/project": "^6.4.1",
     "@microsoft/api-documenter": "^7.30.20",
     "@microsoft/api-extractor": "^7.60.1",
-    "@npmcli/map-workspaces": "^6.0.0",
+    "@npmcli/map-workspaces": "^6.0.1",
     "@npmcli/package-json": "^8.0.1",
     "debug": "^4.4.3",
     "fs-extra": "^11.4.1",
