@@ -1,0 +1,74 @@
+{
+  "name": "@loopback/example-redis-cache",
+  "description": "An example to demonstrate how to add cache in a loopback application",
+  "version": "0.0.1",
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "cache",
+    "redis"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loopbackio/loopback-next.git",
+    "directory": "examples/redis-cache"
+  },
+  "engines": {
+    "node": "12 || 14 || 16 || 17"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "lint": "npm run eslint && npm run prettier:check",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run rebuild",
+    "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
+    "posttest": "npm run lint",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "docker:build": "docker build -t redis-cache .",
+    "docker:run": "docker run -p 3000:3000 -d redis-cache",
+    "premigrate": "npm run build",
+    "migrate": "node ./dist/migrate",
+    "preopenapi-spec": "npm run build",
+    "openapi-spec": "node ./dist/openapi-spec",
+    "prestart": "npm run rebuild",
+    "start": "node -r source-map-support/register .",
+    "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
+    "rebuild": "npm run clean && npm run build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@loopback/boot": "^4.1.0",
+    "@loopback/core": "^3.1.0",
+    "@loopback/repository": "^4.1.0",
+    "@loopback/rest": "^11.1.0",
+    "@loopback/rest-explorer": "^4.1.0",
+    "@loopback/service-proxy": "^4.1.0",
+    "loopback-api-cache": "^1.0.3",
+    "loopback-connector-kv-redis": "^4.0.0",
+    "loopback-connector-postgresql": "^5.5.0",
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^8.1.0",
+    "@loopback/eslint-config": "^12.0.2",
+    "@loopback/testlab": "^4.1.0",
+    "@types/node": "^12.20.43",
+    "eslint": "^8.8.0",
+    "source-map-support": "^0.5.21",
+    "typescript": "~4.5.5"
+  }
+}

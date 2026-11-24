@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+  postgres:
+    image: postgres:14.2
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+    ports:
+      - '5438:5432'
+    volumes:
+      # copy the sql script to create tables
+      - ./sql/init-db.sql:/docker-entrypoint-initdb.d/create_tables.sql

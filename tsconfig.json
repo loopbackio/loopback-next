@@ -71,6 +71,9 @@
       "path": "examples/references-many/tsconfig.json"
     },
     {
+      "path": "examples/redis-cache/tsconfig.json"
+    },
+    {
       "path": "examples/rest-crud/tsconfig.json"
     },
     {
