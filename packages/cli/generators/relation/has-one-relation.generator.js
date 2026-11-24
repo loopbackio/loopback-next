@@ -96,7 +96,9 @@ module.exports = class HasOneRelationGenerator extends BaseRelationGenerator {
       sourceModel,
     );
     const sourceClass = relationUtils.getClassObj(sourceFile, sourceModel);
-    relationUtils.doesRelationExist(sourceClass, relationName);
+    relationUtils.doesRelationExist(sourceClass, relationName, {
+      force: this.options.force,
+    });
 
     modelProperty = this.getHasOne(
       targetModel,
@@ -121,6 +123,20 @@ module.exports = class HasOneRelationGenerator extends BaseRelationGenerator {
       targetModel,
     );
     const targetClass = relationUtils.getClassObj(targetFile, targetModel);
+
+    if (isForeignKeyExist) {
+      const existingFK = targetClass.getProperty(foreignKeyName);
+      if (
+        existingFK &&
+        !relationUtils.isValidPropertyType(targetClass, foreignKeyName, fktype)
+      ) {
+        existingFK.remove();
+        const newFK = relationUtils.addForeignKey(foreignKeyName, fktype);
+        relationUtils.addProperty(targetClass, newFK);
+        targetClass.formatText();
+        await targetFile.save();
+      }
+    }
 
     if (isForeignKeyExist) {
       if (

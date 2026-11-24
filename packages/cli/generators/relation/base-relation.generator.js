@@ -99,6 +99,8 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
       type: this._getRepositoryRelationPropertyType(),
     };
 
+    if (classDeclaration.getProperty(property.name)) return;
+
     // already checked the existence of property before
     relationUtils.addProperty(classDeclaration, property);
   }
