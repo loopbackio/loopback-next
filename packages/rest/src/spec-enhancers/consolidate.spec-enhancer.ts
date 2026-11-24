@@ -6,9 +6,13 @@
 import {
   ApplicationConfig,
   BindingScope,
+  ContextView,
   CoreBindings,
+  filterByKey,
   inject,
   injectable,
+  isPromiseLike,
+  ValueOrPromise,
 } from '@loopback/core';
 import {
   asSpecEnhancer,
@@ -60,18 +64,39 @@ const debug = debugFactory('loopback:openapi:spec-enhancer:consolidate');
  */
 @injectable(asSpecEnhancer, {scope: BindingScope.SINGLETON})
 export class ConsolidationEnhancer implements OASEnhancer {
-  name = 'consolidate';
-  disabled: boolean;
+  readonly name = 'consolidate';
 
-  constructor(
-    @inject(CoreBindings.APPLICATION_CONFIG, {optional: true})
-    readonly config?: ApplicationConfig,
-  ) {
-    this.disabled = this.config?.rest?.openApiSpec?.consolidate === false;
+  private _disabled?: boolean;
+
+  get disabled(): ValueOrPromise<boolean> {
+    if (this._disabled !== undefined) return this._disabled;
+
+    return (async () => {
+      const consolidate: boolean | undefined = (await this._config.values())[0]
+        ?.rest?.openApiSpec?.consolidate;
+      if (consolidate === undefined) return false;
+      this._disabled = consolidate === false;
+      return this._disabled;
+    })();
   }
 
-  modifySpec(spec: OpenApiSpec): OpenApiSpec {
-    return !this.disabled ? this.consolidateSchemaObjects(spec) : spec;
+  constructor(
+    @inject.view(filterByKey(CoreBindings.APPLICATION_CONFIG.key))
+    private _config: ContextView<ApplicationConfig>,
+  ) {
+    this._config.on('refresh', () => {
+      this._disabled = undefined;
+    });
+  }
+
+  async modifySpec(spec: OpenApiSpec): Promise<OpenApiSpec> {
+    const disabled = isPromiseLike(this.disabled)
+      ? await this.disabled
+      : this.disabled;
+
+    return !disabled
+      ? ConsolidationEnhancer._consolidateSchemaObjects(spec)
+      : spec;
   }
 
   /**
@@ -79,23 +104,23 @@ export class ConsolidationEnhancer implements OASEnhancer {
    * property. Moves reusable schema bodies to #/components/schemas and replace
    * with json pointer. It handles title collisions with schema body comparision.
    */
-  private consolidateSchemaObjects(spec: OpenApiSpec): OpenApiSpec {
+  private static _consolidateSchemaObjects(spec: OpenApiSpec): OpenApiSpec {
     // use 'paths' as crawl root
-    this.recursiveWalk(spec.paths, ['paths'], spec);
+    this._recursiveWalk(spec.paths, ['paths'], spec);
 
     return spec;
   }
 
-  private recursiveWalk(
+  private static _recursiveWalk(
     rootSchema: ISpecificationExtension,
-    parentPath: Array<string>,
+    parentPath: string[],
     spec: OpenApiSpec,
   ) {
-    if (this.isTraversable(rootSchema)) {
+    if (this._isTraversable(rootSchema)) {
       Object.entries(rootSchema).forEach(([key, subSchema]) => {
         if (subSchema) {
-          this.recursiveWalk(subSchema, parentPath.concat(key), spec);
-          this.processSchema(subSchema, parentPath.concat(key), spec);
+          this._recursiveWalk(subSchema, parentPath.concat(key), spec);
+          this._processSchema(subSchema, parentPath.concat(key), spec);
         }
       });
     }
@@ -114,17 +139,17 @@ export class ConsolidationEnhancer implements OASEnhancer {
    * @param parentPath - path object to parent
    * @param spec - subject OpenApi specification
    */
-  private processSchema(
+  private static _processSchema(
     schema: SchemaObject | ReferenceObject,
-    parentPath: Array<string>,
+    parentPath: string[],
     spec: OpenApiSpec,
   ) {
-    const schemaObj = this.ifConsolidationCandidate(schema);
+    const schemaObj = this._ifConsolidationCandidate(schema);
     if (schemaObj) {
       // name collison protection
       let instanceNo = 1;
       let title = schemaObj.title!;
-      let refSchema = this.getRefSchema(title, spec);
+      let refSchema = this._getRefSchema(title, spec);
       while (
         refSchema &&
         !compare(schemaObj as ISpecificationExtension, refSchema, {
@@ -132,7 +157,7 @@ export class ConsolidationEnhancer implements OASEnhancer {
         })
       ) {
         title = `${schemaObj.title}${instanceNo++}`;
-        refSchema = this.getRefSchema(title, spec);
+        refSchema = this._getRefSchema(title, spec);
       }
       if (!refSchema) {
         debug('Creating new component $ref with schema %j', schema);
@@ -143,7 +168,7 @@ export class ConsolidationEnhancer implements OASEnhancer {
     }
   }
 
-  private getRefSchema(
+  private static _getRefSchema(
     name: string,
     spec: OpenApiSpec,
   ): ISpecificationExtension | undefined {
@@ -152,7 +177,7 @@ export class ConsolidationEnhancer implements OASEnhancer {
     return schema;
   }
 
-  private patchRef(
+  private static patchRef(
     name: string,
     value: ISpecificationExtension,
     spec: OpenApiSpec,
@@ -160,14 +185,14 @@ export class ConsolidationEnhancer implements OASEnhancer {
     _.set(spec, ['components', 'schemas', name], value);
   }
 
-  private patchPath(name: string, path: Array<string>, spec: OpenApiSpec) {
+  private static patchPath(name: string, path: string[], spec: OpenApiSpec) {
     const patch = {
       $ref: `#/components/schemas/${name}`,
     };
     _.set(spec, path, patch);
   }
 
-  private ifConsolidationCandidate(
+  private static _ifConsolidationCandidate(
     schema: SchemaObject | ReferenceObject,
   ): SchemaObject | undefined {
     // use title to discriminate references
@@ -176,7 +201,7 @@ export class ConsolidationEnhancer implements OASEnhancer {
       : undefined;
   }
 
-  private isTraversable(schema: ISpecificationExtension): boolean {
-    return schema && typeof schema === 'object' ? true : false;
+  private static _isTraversable(schema: ISpecificationExtension): boolean {
+    return schema && typeof schema === 'object';
   }
 }
