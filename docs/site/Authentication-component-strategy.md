@@ -12,7 +12,7 @@ permalink: /doc/en/lb4/Authentication-component-strategy.html
 `@loopback/authentication` package understands. Hence, any authentication
 strategy that adopts this interface can be used with `@loopback/authentication`.
 Think of it like the standard interface for
-[Passport.js](http://www.passportjs.org/packages/passport-npm/) uses to
+[Passport.js](https://www.passportjs.org/packages/passport-npm/) uses to
 interface with many different authentication strategies.
 
 With a **common** authentication strategy interface and an

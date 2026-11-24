@@ -96,10 +96,12 @@ building sequences, you use LoopBack Elements to respond to a request:
 
 - [`InvokeMiddleware`](https://loopback.io/doc/en/lb4/apidocs.express.invokemiddleware.html)
 - [`FindRoute`](https://loopback.io/doc/en/lb4/apidocs.rest.findroute.html)
-- [`Request`](http://apidocs.strongloop.com/loopback-next/) - (TBD) missing API
-  docs link
-- [`Response`](http://apidocs.strongloop.com/loopback-next/) - (TBD) missing API
-  docs link
+- [`Request`](https://expressjs.com/en/4x/api.html#req) - the Express request
+  object, see
+  [Accessing HTTP request and response](Accessing-http-request-response.md)
+- [`Response`](https://expressjs.com/en/4x/api.html#res) - the Express response
+  object, see
+  [Accessing HTTP request and response](Accessing-http-request-response.md)
 - [`OperationRetVal`](https://loopback.io/doc/en/lb4/apidocs.rest.operationretval.html)
 - [`ParseParams`](https://loopback.io/doc/en/lb4/apidocs.rest.parseparams.html)
 - [`OpenAPISpec`](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.openapispec.html)

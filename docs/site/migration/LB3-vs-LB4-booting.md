@@ -56,7 +56,7 @@ Boot scripts are resolved from the `server/boot` directory and run.
 ### In LoopBack 4
 
 In LoopBack 4, the booting tasks are shared between the `@loopback/core`'s
-[Application](../apidocs/apidocs.core.application.md) class and the
+[Application](../apidocs.core.application.html) class and the
 [@loopback/boot](../apidocs/apidocs.boot.html) package. Since your application
 will extend `BootMixin` and `Application`, their separation will not be apparent
 to you, and understanding of how they work together as one is not mandatory for
@@ -72,8 +72,8 @@ refer to the
 #### 1. Configuration of application settings
 
 There is no `config.json` in LoopBack 4. The application options are passed in
-the constructor of the [Application](../apidocs/apidocs.core.application.md)
-class. Read more about application configuration
+the constructor of the [Application](../apidocs.core.application.html) class.
+Read more about application configuration
 [here](../Application.md#configuring-your-application).
 
 #### 2. Configuration of datasources

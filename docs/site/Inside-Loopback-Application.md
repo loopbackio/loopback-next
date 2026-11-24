@@ -105,10 +105,10 @@ The API business logic is separated between various layers in LoopBack:
   will have to authenticate incoming request, parse and validate as well as
   orchestrate calls to `Services` and `Repositories`.
 
-- [Services](Calling-other-APIs-and-Web-Services.md) provide common interfaces
-  for external APIs and services. This allows invoking external services without
-  mentioning connection details every time. `Services` interchangeably also
-  provide common interfaces for locally available classes.
+- [Services](Accessing-services.md) provide common interfaces for external APIs
+  and services. This allows invoking external services without mentioning
+  connection details every time. `Services` interchangeably also provide common
+  interfaces for locally available classes.
 
 - [Models](Model.md) and [Relations](Relations.md) represent domain objects and
   provide entity relationship models.

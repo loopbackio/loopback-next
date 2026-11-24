@@ -37,5 +37,5 @@ lb4 example <tutorial-name>
 ```
 
 Please follow the instructions in
-[Install LoopBack4 CLI](Getting-started.md#install-loopback-4-cli) if you don't
+[Install LoopBack4 CLI](Installation.md#install-loopback-4-cli) if you don't
 have `lb4` installed yet.

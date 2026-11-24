@@ -97,7 +97,7 @@ separated from the code responsible for implementing client side APIs.
   <td>Model Definition</td>
   <td>Models can be defined with JavaScript or JSON</td>
   <td>Models can be defined with TypeScript;
-    <br>TBD: JavaScript - see
+    <br>JavaScript: see
     <a href="https://github.com/loopbackio/loopback-next/issues/560">loopback-next#560</a>
   </td>
 </tr>
@@ -148,7 +148,7 @@ separated from the code responsible for implementing client side APIs.
   <td>DataSource</td>
   <td>JSON</td>
   <td>TypeScript and JSON;
-    <br>TBD: JavaScript - see
+    <br>JavaScript: see
     <a href="https://github.com/loopbackio/loopback-next/issues/560">loopback-next#560</a>
   </td>
 </tr>
@@ -157,7 +157,7 @@ separated from the code responsible for implementing client side APIs.
   <td>Connectors</td>
   <td>Plain JavaScript, ES5 with callbacks</td>
   <td>Plain JavaScript, ES5 with callbacks;
-    <br>TBD: TypeScript with async/await - see
+    <br>TypeScript with async/await: see
     <a href="https://github.com/loopbackio/loopback-next/issues/889">loopback-next#889</a>
   </td>
 </tr>
@@ -174,10 +174,9 @@ separated from the code responsible for implementing client side APIs.
   <td>Middleware</td>
   <td>Express middleware with phase-based registration and ordering</td>
   <td>Sequence consisting of actions;
-    <br>TBD: support for Express middleware, see
-    <a href="https://github.com/loopbackio/loopback-next/issues/1293">loopback-next#1293</a>
-    and
-    <a href="https://github.com/loopbackio/loopback-next/issues/2035">loopback-next#2035</a>.
+    <br>Express middleware is also supported, see
+    <a href="Express-middleware.html">Express middleware</a>
+    and <a href="Middleware.html">Middleware</a>.
   </td>
 </tr>
 
@@ -196,13 +195,13 @@ separated from the code responsible for implementing client side APIs.
 <tr>
   <td>CRUD operation hooks</td>
   <td>Hooks for CRUD operations</td>
-  <td>(TBD)</td>
+  <td>Not available yet</td>
 </tr>
 
 <tr>
   <td>Built-in models</td>
   <td>Built-in User/AccessToken/Application/ACL/Role/RoleMapping for AAA</td>
-  <td>(TBD)</td>
+  <td>Not available yet. See <a href="JWT-authentication-extension.html">JWT authentication extension</a> for a reusable User model.</td>
 </tr>
 
 <tr>
@@ -249,7 +248,7 @@ separated from the code responsible for implementing client side APIs.
   <td>OAuth 2.0 provider</td>
   <td><a href="/doc/en/lb3/OAuth-2.0.html"><code>loopback-component-oauth2</code></a>
   </td>
-  <td>(TBD)</td>
+  <td>Not available yet</td>
 </tr>
 
 <tr>
@@ -306,7 +305,8 @@ Some of the highlights of LoopBack 4 include:
   - Models: define schemas for business objects
   - Services: interact with existing REST APIs, SOAP Web Services, and other
     forms of services/microservices
-- Refactor the ORM into separate modules for different concerns (TBD)
+- Refactor the ORM into separate modules for different concerns (work in
+  progress)
 
 As LoopBack 4 continues to grow, more features are continuously added. You can
 check out our [blog](https://strongloop.com/strongblog/tag_LoopBack.html) to

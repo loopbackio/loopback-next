@@ -24,7 +24,7 @@ In LoopBack 4,
 
 - data-access APIs are implemented by [repositories](../../Repository.md) that
   are decoupled from models.
-- REST APIs are implemented by [controllers](docs/site/Controller.md) that are
+- REST APIs are implemented by [controllers](../../Controller.md) that are
   decoupled from models.
 
 A `Repository` represents a specialized service interface that provides
@@ -85,9 +85,9 @@ export interface NoteRelations {
 export type NoteWithRelations = Note & NoteRelations;
 ```
 
-A [model](docs/site/Model.md) describes business domain objects, for example,
+A [model](../../Model.md) describes business domain objects, for example,
 Customer, Address, and Order. It usually defines a list of properties with name,
-type, and other constraints like [relations](docs/site/Relations.md).
+type, and other constraints like [relations](../../Relations.md).
 
 A CLI-generated **repository** for a model `Note` would look like this:
 

@@ -714,7 +714,7 @@ To write an integration test, we need to:
 #### Obtain a Service Proxy instance
 
 In
-[Make service proxies easier to test](./Calling-other-APIs-and-Web-Services.md#make-service-proxies-easier-to-test),
+[Make service proxies easier to test](./Accessing-services.md#make-service-proxies-easier-to-test),
 we are suggesting to leverage Providers as a tool allowing both the IoC
 framework and the tests to access service proxy instances.
 

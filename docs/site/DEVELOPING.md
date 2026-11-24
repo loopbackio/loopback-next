@@ -204,7 +204,7 @@ npm t
   [API Documentation](#api-documentation) below).
 
 - Follow our style guide as documented on loopback.io:
-  [Code style guide](http://loopback.io/doc/en/contrib/style-guide.html).
+  [Code style guide](https://loopback.io/doc/en/contrib/style-guide.html).
 
 ### Linting and formatting
 
@@ -357,7 +357,7 @@ src/__tests__/unit/application.unit.ts
 
 ## Documentation
 
-The documentation available at [http://loopback.io/doc/en/lb4](loopback.io)
+The documentation available at [https://loopback.io/doc/en/lb4](loopback.io)
 website is powered by Jekyll and Markdown. The main site content and Jekyll
 configuration is hosted in
 [loopback.io](https://github.com/loopbackio/loopback.io) repository on GitHub.

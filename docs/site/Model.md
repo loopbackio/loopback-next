@@ -332,7 +332,8 @@ If you're a LB3 user, the following entries that are no longer available in LB4:
   <tr>
     <td><code>acls</code></td>
     <td>
-      (TBD)
+      This entry is not supported. Use the
+      <a href="Authorization-overview.html">authorization component</a> instead.
     </td>
   </tr>
   <tr>
@@ -343,7 +344,7 @@ If you're a LB3 user, the following entries that are no longer available in LB4:
   </tr>
   <tr>
   <td><code>excludeBaseProperties</code></td>
-  <td>(TBD)</td>
+  <td>This entry is not supported yet.</td>
   </tr>
   <tr>
   <td><code>http</code></td>
@@ -352,7 +353,7 @@ If you're a LB3 user, the following entries that are no longer available in LB4:
   <tr>
     <td><code>options</code></td>
     <td>
-      (TBD) see <a href="https://github.com/loopbackio/loopback-next/issues/2142">issue #2142</a> for further discussion.
+      This entry is not supported yet. See <a href="https://github.com/loopbackio/loopback-next/issues/2142">issue #2142</a> for further discussion.
     </td>
   </tr>
   <tr>
@@ -669,8 +670,8 @@ Tips:
     to `false`.
 4.  Check out [Database Migration](Database-migrations.md) if you'd like to have
     LoopBack 4 create relational database's schemas for you based on model
-    definitions. Always check [Database Connectors](Database-connectors.md) for
-    details and examples for database migration / discover.
+    definitions. Always check [Database Connectors](Database-connectors.html)
+    for details and examples for database migration / discover.
 
 ### Array Property Decorator
 

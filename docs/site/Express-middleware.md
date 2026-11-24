@@ -333,7 +333,7 @@ export class MorganInterceptor extends ExpressMiddlewareInterceptorProvider<IHel
 ## Use Express Router to enable
 
 Express allows HTTP verbs to be used to set up routes, such as
-`app.post('/hello', ...)`. See http://expressjs.com/en/4x/api.html#app.METHOD.
+`app.post('/hello', ...)`. See https://expressjs.com/en/4x/api.html#app.METHOD.
 
 To allow a similar usage in LoopBack, we can create an Express router and
 register it to LoopBack as follows:

@@ -14,7 +14,7 @@ Missing instructions for your LoopBack 3 use case? Please report a [Migration do
 # Migrating Passport Strategies
 
 This page is a guide to migrate LB3 apps that use
-[Passport Strategies](http://www.passportjs.org/) for authentication use cases.
+[Passport Strategies](https://www.passportjs.org/) for authentication use cases.
 Before following this guide, please know more about the
 [@loopback/authentication-passport](https://loopback.io/doc/en/lb4/Authentication-passport.html)
 package.

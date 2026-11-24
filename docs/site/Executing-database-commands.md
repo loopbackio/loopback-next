@@ -65,9 +65,9 @@ manually.
 
 See API docs for parameter reference, additional information and examples:
 
-- [SQL variant](./apidocs/repository.defaultcrudrepository.execute.md)
-- [MongoDB variant](./apidocs/repository.defaultcrudrepository.execute_1.md)
-- [Generic variant](./apidocs/repository.defaultcrudrepository.execute_2.md)
+- [SQL variant](./apidocs.repository.defaultcrudrepository.execute.html)
+- [MongoDB variant](./apidocs.repository.defaultcrudrepository.execute_1.html)
+- [Generic variant](./apidocs.repository.defaultcrudrepository.execute_2.html)
 
 {% include important.html content="Each connector implements a slightly
 different flavor of `execute()` to match the capabilities supported by the

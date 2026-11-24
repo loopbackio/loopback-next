@@ -13,7 +13,7 @@ summary: Transactional API usage in LoopBack 4
 
 ## Overview
 
-A *transaction* is a sequence of data operations performed as a single logical
+A _transaction_ is a sequence of data operations performed as a single logical
 unit of work. Many relational databases support transactions to help enforce
 data consistency and business logic requirements.
 
@@ -53,7 +53,7 @@ method of `DataSource` class.
 ## Handling Transactions
 
 See
-the [API reference](https://apidocs.strongloop.com/loopback-datasource-juggler/#datasource-prototype-begintransaction) for
+the [API reference](https://apidocs.loopback.io/loopback-datasource-juggler/#datasource-prototype-begintransaction) for
 full transaction lower-level API documentation.
 
 Performing operations in a transaction typically involves the following steps:

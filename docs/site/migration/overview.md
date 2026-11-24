@@ -76,7 +76,7 @@ require migration:
 
 4. LoopBack 4 introduced a very different programming model for components and
    extensions. If you are maintaining or using LoopBack 3 components, then you
-   should read [Migrating components and extensions](extensions.md).
+   should read [Migrating components and extensions](components/overview.md).
 
 5. There are several client SDKs for LoopBack 3 that make it easier for
    different clients to consume REST APIs provided by LoopBack applications.

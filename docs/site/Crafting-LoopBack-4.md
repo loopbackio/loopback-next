@@ -8,16 +8,16 @@ permalink: /doc/en/lb4/Crafting-LoopBack-4.html
 
 ## Background
 
-[LoopBack](http://loopback.io) is an open-source [Node.js](https://nodejs.org)
+[LoopBack](https://loopback.io) is an open-source [Node.js](https://nodejs.org)
 framework built for API developers. Its primary goal is to help create APIs as
 microservices from existing services/databases and expose them as endpoints for
 client applications, such as web, mobile, and IoT. LoopBack connects the dots
 between accepting API requests and interacting with backend resources. By
 facilitating developers to implement API logic with out of box integration
 capabilities, LoopBack establishes itself as the API composition layer to
-[differentiate](http://loopback.io/resources/#compare) from other frameworks,
+[differentiate](https://loopback.io/resources/#compare) from other frameworks,
 such as [Express](https://expressjs.com), [Hapi](https://hapijs.com), and
-[Sails](http://sailsjs.com).
+[Sails](https://sailsjs.com).
 
 ![loopback-composition](./imgs/loopback-composition.png)
 
@@ -150,7 +150,7 @@ LoopBack 4's goals are:
       [TypeScript](https://www.typescriptlang.org/) for ease of maintenance and
       productivity.
     - Embrace new standards such as [OpenAPI Spec](https://www.openapis.org/)
-      and [GraphQL](http://graphql.org/).
+      and [GraphQL](https://graphql.org/).
 
 2.  Promote extensibility to grow the ecosystem.
     - Build a minimal core and enable everything else to be implemented via
