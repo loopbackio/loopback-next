@@ -11,6 +11,7 @@ import {
   injectable,
 } from '@loopback/core';
 import {asSpecEnhancer, OASEnhancer, OpenAPIObject} from '@loopback/rest';
+import {APIConnectOASObjects} from './types';
 
 /**
  * Configuration for IBM API Connect extensions to the OpenAPI spec
@@ -37,30 +38,35 @@ export class ApiConnectSpecEnhancer implements OASEnhancer {
     },
   ) {}
 
-  modifySpec(spec: OpenAPIObject): OpenAPIObject {
-    // Add `x-ibm-name`
-    spec.info = {'x-ibm-name': this.appMetadata.name, ...spec.info};
-    // Add `x-ibm-configuration`
-    spec['x-ibm-configuration'] = {
-      assembly: {
-        execute: [
-          {
-            invoke: {
-              title: 'invoke',
-              version: '2.0.0',
-              'target-url': this.options.targetUrl,
+  modifySpec(spec: OpenAPIObject): APIConnectOASObjects.OpenAPIObject {
+    const modifiedSpec: APIConnectOASObjects.OpenAPIObject = {
+      ...spec,
+      info: {
+        ...spec.info,
+        'x-ibm-name': this.appMetadata.name,
+      },
+      'x-ibm-configuration': {
+        assembly: {
+          execute: [
+            {
+              invoke: {
+                title: 'invoke',
+                version: '2.0.0',
+                'target-url': this.options.targetUrl,
+              },
             },
-          },
-        ],
+          ],
+        },
+        cors: {
+          enabled: true,
+        },
+        enforced: true,
+        phase: 'realized',
+        testable: true,
+        gateway: 'datapower-api-gateway',
       },
-      cors: {
-        enabled: true,
-      },
-      enforced: true,
-      phase: 'realized',
-      testable: true,
-      gateway: 'datapower-api-gateway',
     };
-    return spec;
+
+    return modifiedSpec;
   }
 }
