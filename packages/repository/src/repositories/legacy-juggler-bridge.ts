@@ -738,7 +738,7 @@ export class DefaultCrudRepository<
   }
 
   protected toEntity<R extends T>(model: juggler.PersistedModel): R {
-    return new this.entityClass(model.toObject()) as R;
+    return new this.entityClass(model.toObject({onlySchema: false})) as R;
   }
 
   protected toEntities<R extends T>(models: juggler.PersistedModel[]): R[] {
