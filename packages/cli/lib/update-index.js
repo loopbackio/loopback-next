@@ -19,7 +19,7 @@ const defaultFs = {
  * @param {String} dir The directory in which index.ts is to be updated/created
  * @param {*} file The new file to be exported from index.ts
  */
-module.exports = async function (dir, file, fsApis) {
+module.exports = async function (dir, file, fsApis, subDir = '') {
   const {read, write, append, exists} = {...defaultFs, ...fsApis};
   debug(`Updating index with ${path.join(dir, file)}`);
   const indexFile = path.join(dir, 'index.ts');
@@ -32,7 +32,7 @@ module.exports = async function (dir, file, fsApis) {
   if (indexExists) {
     index = await read(indexFile);
   }
-  const content = `export * from './${file.slice(0, -3)}';\n`;
+  const content = `export * from './${subDir ? subDir + '/' : ''}${file.slice(0, -3)}';\n`;
   if (!index.includes(content)) {
     if (indexExists) {
       await append(indexFile, content);

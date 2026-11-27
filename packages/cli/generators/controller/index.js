@@ -56,6 +56,11 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       required: false,
       description: g.f('Type for the %s', this.artifactInfo.type),
     });
+    this.option('outDir', {
+      type: String,
+      required: false,
+      description: 'Custom output directory for controller',
+    });
 
     return super._setupGenerator();
   }
@@ -261,6 +266,9 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
     const source = this.templatePath(path.join('src', 'controllers', template));
     if (debug.enabled) {
       debug(`Using template at: ${source}`);
+    }
+    if (this.options.outDir) {
+      this.artifactInfo.outDir = path.resolve(this.options.outDir);
     }
     const dest = this.destinationPath(
       path.join(this.artifactInfo.outDir, this.artifactInfo.outFile),
