@@ -99,6 +99,10 @@ module.exports = class HasManyRelationGenerator extends BaseRelationGenerator {
       sourceModel,
     );
     const sourceClass = relationUtils.getClassObj(sourceFile, sourceModel);
+    const modelPropertyMetadata = relationUtils.getPropertyMetadata(
+      sourceClass,
+      foreignKeyName,
+    );
     relationUtils.doesRelationExist(sourceClass, relationName);
 
     modelProperty = this.getHasMany(
@@ -106,6 +110,7 @@ module.exports = class HasManyRelationGenerator extends BaseRelationGenerator {
       relationName,
       isDefaultForeignKey,
       foreignKeyName,
+      modelPropertyMetadata,
     );
 
     relationUtils.addProperty(sourceClass, modelProperty);
@@ -135,24 +140,52 @@ module.exports = class HasManyRelationGenerator extends BaseRelationGenerator {
     }
   }
 
-  getHasMany(className, relationName, isDefaultForeignKey, foreignKeyName) {
-    let relationDecorator = [
-      {
-        name: 'hasMany',
-        arguments: [`() => ${className}, {keyTo: '${foreignKeyName}'}`],
-      },
-    ];
-    if (isDefaultForeignKey) {
-      relationDecorator = [
-        {name: 'hasMany', arguments: [`() => ${className}`]},
-      ];
+  getHasMany(
+    className,
+    relationName,
+    isDefaultForeignKey,
+    foreignKeyName,
+    modelPropertyMetadata,
+  ) {
+    const decoratorArguments = [`() => ${className}`];
+    let cleanedPropertyMetadata = '';
+    if (!isDefaultForeignKey) {
+      decoratorArguments.push(`{keyTo: '${foreignKeyName}'}`);
     }
-
-    return {
-      decorators: relationDecorator,
+    if (modelPropertyMetadata && modelPropertyMetadata.trim() !== '') {
+      // Strip outer braces if modelPropertyMetadata is passed as a braced string like "{ nullable: true }"
+      cleanedPropertyMetadata = modelPropertyMetadata
+        .replace(/^\{|\}$/g, '')
+        .trim();
+    }
+    if (cleanedPropertyMetadata) {
+      if (decoratorArguments.length === 1) {
+        decoratorArguments.push('{}');
+      }
+      decoratorArguments.push(`{${cleanedPropertyMetadata}}`);
+    }
+    let isPropertyOptional = false;
+    if (
+      modelPropertyMetadata &&
+      modelPropertyMetadata.includes('nullable: true')
+    ) {
+      isPropertyOptional = true;
+    }
+    const cleanClassName = className.replace(/\s*\|\s*undefined/g, '').trim();
+    const property = {
+      decorators: [
+        {
+          name: 'hasMany',
+          arguments: decoratorArguments,
+        },
+      ],
       name: relationName,
-      type: className + '[]',
+      type: cleanClassName + '[]',
     };
+    if (isPropertyOptional) {
+      property.hasQuestionToken = isPropertyOptional;
+    }
+    return property;
   }
 
   _getRepositoryRequiredImports(dstModelClassName, dstRepositoryClassName) {

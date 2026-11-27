@@ -268,7 +268,7 @@ export class Order extends Entity {
   })
   name?: string;
 
-  @belongsTo(() => Customer)
+  @belongsTo(() => Customer, {}, {type: 'number', })
   customerId: number;
 
   constructor(data?: Partial<Order>) {
