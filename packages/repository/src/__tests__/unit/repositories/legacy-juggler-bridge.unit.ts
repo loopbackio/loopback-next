@@ -255,6 +255,19 @@ describe('DefaultCrudRepository', () => {
     expect(result.toJSON()).to.eql(note.toJSON());
   });
 
+  it('implements Repository.upsert()', async () => {
+    const repo = new DefaultCrudRepository(Note, ds);
+    try {
+      await repo.findById(4);
+    } catch {
+      // record with id doesn't exists before upsert
+      const note = await repo.upsert({id: 4, title: 't4', content: 'c4'});
+      // it now exists after invoking supert
+      const result = await repo.findById(note.id);
+      expect(result.toJSON()).to.eql(note.toJSON());
+    }
+  });
+
   it('implements Repository.createAll()', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
     const notes = await repo.createAll([
