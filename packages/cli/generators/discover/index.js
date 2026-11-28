@@ -348,6 +348,12 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
       this.artifactInfo.modelDefinitions.push(modelDefinition);
       debug(`Discovered: ${modelInfo.name}`);
     }
+    if (this.options.relations) {
+      await modelMaker.discoverInverseRelations(
+        this.artifactInfo.dataSource,
+        this.artifactInfo.modelDefinitions,
+      );
+    }
   }
 
   /**
@@ -363,6 +369,12 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     this.artifactInfo.indexesToBeUpdated =
       this.artifactInfo.indexesToBeUpdated || [];
 
+    this.artifactInfo.relationOptions = [];
+    this.artifactInfo.repositoryOptions = {
+      datasource: this.options.dataSource || this.options.datasource,
+      repositoryBaseClass: 'DefaultCrudRepository',
+      repositories: new Set(),
+    };
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < this.artifactInfo.modelDefinitions.length; i++) {
       const modelDefinition = this.artifactInfo.modelDefinitions[i];
@@ -374,6 +386,15 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         templateData,
       );
 
+      const sourceModelIdProperty = {};
+      for (const [propertyKey, property] of Object.entries(
+        modelDefinition.properties,
+      )) {
+        if (property.id) {
+          sourceModelIdProperty.name = propertyKey;
+          sourceModelIdProperty.type = property.type.toLowerCase();
+        }
+      }
       const fullPath = path.resolve(
         this.options.outDir || this.artifactInfo.outDir,
         utils.getModelFileName(modelDefinition.name),
@@ -391,23 +412,21 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
           );
           // If targetModel is not in discovered models, skip creating relation
           if (targetModel) {
-            Object.assign(templateData.properties[relation.foreignKey], {
-              relation,
+            this.artifactInfo.relationOptions.push({
+              sourceModel: templateData.name,
+              targetModel: targetModel.name,
+              foreignKeyName: relation.foreignKey,
+              type: relation.type,
+              registerInclusionResolver: true,
+              yes: true,
+              sourceModelIdProperty,
             });
-            if (!relationImports.includes(relation.type)) {
-              relationImports.push(relation.type);
-            }
-            relationDestinationImports.push(relation.model);
-
-            foreignKeys[relationName] = {};
-            Object.assign(foreignKeys[relationName], {
-              name: relationName,
-              entity: relation.model,
-              entityKey: Object.entries(targetModel.properties).find(
-                x => x?.[1].id === 1,
-              )?.[0],
-              foreignKey: relation.foreignKey,
-            });
+            this.artifactInfo.repositoryOptions.repositories.add(
+              templateData.name,
+            );
+            this.artifactInfo.repositoryOptions.repositories.add(
+              targetModel.name,
+            );
           }
         }
         // remove model import if the model relation is with itself
@@ -462,6 +481,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     // This part at the end is just for the ArtifactGenerator
     // end message to output something nice, before it was "Discover undefined was created in src/models/"
     this.artifactInfo.type = 'Models';
+    this.artifactInfo.projectRoot = this.destinationPath();
     this.artifactInfo.name = this.artifactInfo.modelDefinitions
       .map(d => d.name)
       .join(',');

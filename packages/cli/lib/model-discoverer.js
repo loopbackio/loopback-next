@@ -22,6 +22,18 @@ async function discoverModelNames(ds, options) {
 }
 
 /**
+ * Optionaly returns the modified schema with inversed relations
+ * @param ds - {Juggler.DataSource}
+ * @param object - {Promise<Juggler.SchemaDefinition>}
+ * @returns {Promise<Juggler.SchemaDefinition>}
+ */
+async function discoverInverseRelations(ds, schemas) {
+  if (ds.discoverInverseRelations) {
+    return ds.discoverInverseRelations(schemas);
+  }
+}
+
+/**
  * Returns the schema definition for a model
  * @param ds - {Juggler.DataSource}
  * @param modelName - {string}
@@ -111,6 +123,7 @@ module.exports = {
   sanitizeProperty,
   discoverModelNames,
   discoverSingleModel,
+  discoverInverseRelations,
   loadDataSource,
   loadDataSourceByName,
   DEFAULT_DATASOURCE_DIRECTORY,
