@@ -59,7 +59,7 @@
     "@loopback/testlab": "^9.0.1",
     "@types/debug": "^4.1.13",
     "@types/json-merge-patch": "1.0.0",
-    "@types/lodash": "^4.17.27",
+    "@types/lodash": "^4.17.28",
     "@types/node": "^20.19.43"
   }
 }
