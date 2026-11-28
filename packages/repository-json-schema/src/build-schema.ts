@@ -19,6 +19,7 @@ import {inspect} from 'util';
 import {JsonSchema} from './index';
 import {JSON_SCHEMA_KEY} from './keys';
 const debug = debugFactory('loopback:repository-json-schema:build-schema');
+import {SpecificationExtension} from './types';
 
 export interface JsonSchemaOptions<T extends object> {
   /**
@@ -596,6 +597,24 @@ export function modelToJsonSchema<T extends object>(
   result.additionalProperties = meta.settings.strict === false;
   debug('  additionalProperties?', result.additionalProperties);
 
+  type Relationship = {
+    description?: string;
+    type?: string;
+    $ref?: string;
+    items?: {$ref: string};
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    'x-foreign-key'?: {[x: string]: string};
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    'x-relation-type'?: string;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    'x-source-model'?: string;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    'x-target-model'?: string;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    'x-include-relations'?: string;
+  };
+  const relationships: {[x: string]: Relationship} = {};
+
   if (options.includeRelations) {
     for (const r in meta.relations) {
       result.properties = result.properties ?? {};
@@ -620,6 +639,101 @@ export function modelToJsonSchema<T extends object>(
           .keyFrom as JsonSchema;
       }
 
+      const foreignKey: {[x: string]: string} = {};
+
+      if (!relationships[relMeta.name]) {
+        relationships[relMeta.name] = {};
+      }
+
+      if (relMeta.type === 'belongsTo') {
+        let keyFrom = (relMeta as {keyFrom: string}).keyFrom;
+        if (!keyFrom) {
+          keyFrom = targetType.name.toLowerCase() + 'Id';
+        }
+        foreignKey[keyFrom] = targetType.name;
+        relationships[relMeta.name].description =
+          `${relMeta.source.name} belongs to ${targetType.name}.`;
+        relationships[relMeta.name].type = 'object';
+        relationships[relMeta.name].$ref =
+          `#/definitions/${targetSchema.title}`;
+      }
+      if (relMeta.type === 'hasMany') {
+        const through = (
+          relMeta as {through?: {keyTo?: string; keyFrom?: string}}
+        ).through;
+        if ((relMeta as {through: object}).through) {
+          const keyTo = through?.keyTo ?? targetType.name.toLowerCase() + 'Id';
+          const keyFrom =
+            through?.keyFrom ?? relMeta.source.name.toLowerCase() + 'Id';
+
+          foreignKey[keyTo] = targetType.name;
+          foreignKey[keyFrom] = relMeta.source.name;
+
+          relationships[relMeta.name].description =
+            `${relMeta.source.name} have many ${targetType.name}.`;
+          relationships[relMeta.name].type = 'object';
+          relationships[relMeta.name].$ref =
+            `#/definitions/${targetSchema.title}`;
+        } else {
+          const keyFrom =
+            (relMeta as {keyFrom?: string}).keyFrom ??
+            relMeta.source.name.toLowerCase() + 'Id';
+          foreignKey[keyFrom] = relMeta.source.name;
+          relationships[relMeta.name].description =
+            `${relMeta.source.name} have many ${targetType.name}.`;
+          relationships[relMeta.name].type = 'array';
+          relationships[relMeta.name].items = {
+            $ref: `#/definitions/${targetSchema.title}`,
+          };
+        }
+      }
+
+      if (relMeta.type === 'hasOne') {
+        let keyTo = (relMeta as {keyTo: string}).keyTo;
+
+        if (!keyTo) {
+          keyTo = relMeta.source.name.toLowerCase() + 'Id';
+        }
+        foreignKey[keyTo] = relMeta.source.name;
+        relationships[relMeta.name].description =
+          `${relMeta.source.name} have one ${targetType.name}.`;
+        relationships[relMeta.name].type = 'object';
+        relationships[relMeta.name].$ref =
+          `#/definitions/${targetSchema.title}`;
+      }
+
+      if (relMeta.type === 'referencesMany') {
+        let keyFrom = (relMeta as {keyFrom: string}).keyFrom;
+        if (!keyFrom) {
+          keyFrom = targetType.name.toLowerCase() + 'Ids';
+        }
+        foreignKey[keyFrom] = targetType.name;
+        relationships[relMeta.name].description =
+          `${relMeta.source.name} references many ${targetType.name}.`;
+        relationships[relMeta.name].type = 'array';
+        relationships[relMeta.name].items = {
+          $ref: `#/definitions/${targetSchema.title}`,
+        };
+      }
+      // Attach OpenAPI vendor extension metadata for relationship type and foreign keys
+      relationships[relMeta.name]['x-foreign-key'] = foreignKey;
+      relationships[relMeta.name]['x-relation-type'] = relMeta.type;
+      relationships[relMeta.name]['x-source-model'] = relMeta.source.name;
+      relationships[relMeta.name]['x-target-model'] = targetType.name;
+      if (targetOptions.includeRelations) {
+        relationships[relMeta.name]['x-include-relations'] =
+          targetOptions.includeRelations;
+      }
+      // Safely merge newly generated relationships with any existing ones on the target schema,
+      // casting through SpecificationExtension to satisfy TypeScript strict record constraints.
+      const existingRelations = (result as JsonSchema & SpecificationExtension)[
+        'x-relationships'
+      ] as Record<string, unknown> | undefined;
+
+      (result as JsonSchema & SpecificationExtension)['x-relationships'] = {
+        ...relationships,
+        ...existingRelations,
+      };
       includeReferencedSchema(targetSchema.title!, targetSchema);
     }
   }

@@ -6,6 +6,7 @@
 import {JsonSchema} from '@loopback/repository-json-schema';
 import _ from 'lodash';
 import {
+  ISpecificationExtension,
   isSchemaObject,
   ReferenceObject,
   SchemaObject,
@@ -128,6 +129,12 @@ export function jsonToSchemaObject(
         if (Array.isArray(json.examples)) {
           result.example = json.examples[0];
         }
+        break;
+      }
+      case 'x-relationships': {
+        result['x-relationships'] = (
+          json as JsonSchema & ISpecificationExtension
+        )['x-relationships'];
         break;
       }
       default: {
