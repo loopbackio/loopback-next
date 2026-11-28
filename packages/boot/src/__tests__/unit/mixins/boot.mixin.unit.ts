@@ -26,6 +26,22 @@ describe('BootMixin unit tests', () => {
     expect(boundComponent).to.containEql('components.BootComponent');
   });
 
+  it('binds BOOT_OPTIONS to an empty object by default', async () => {
+    expect(await app.get(BootBindings.BOOT_OPTIONS)).to.eql({});
+  });
+
+  it('binds BOOT_OPTIONS to the bootOptions of the app', async () => {
+    app.bootOptions = {controllers: {dirs: ['ctrl']}};
+    expect(await app.get(BootBindings.BOOT_OPTIONS)).to.eql({
+      controllers: {dirs: ['ctrl']},
+    });
+  });
+
+  it('binds PROJECT_ROOT to the projectRoot of the app', async () => {
+    app.projectRoot = '/my/project';
+    expect(await app.get(BootBindings.PROJECT_ROOT)).to.equal('/my/project');
+  });
+
   it('binds booter from app.booters()', async () => {
     app.booters(TestBooter);
     const booter = await app.get(`${BootBindings.BOOTERS}.TestBooter`);

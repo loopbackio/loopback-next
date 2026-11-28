@@ -285,6 +285,18 @@ describe('Inspector for instance methods', () => {
     );
     expect(methodMeta).to.be.undefined();
   });
+
+  it('defaults to constructor metadata when methodName is omitted', () => {
+    // When methodName is omitted, getMethodMetadata defaults to '' which
+    // represents the constructor. This exercises the `methodName ?? ''` branch.
+    const meta = MetadataInspector.getMethodMetadata(
+      'test',
+      BaseController.prototype,
+      // methodName intentionally omitted
+    );
+    // There is no constructor metadata, so this returns undefined
+    expect(meta).to.be.undefined();
+  });
 });
 
 describe('Inspector for static methods', () => {
@@ -768,5 +780,38 @@ describe('Inspector for design time metadata', () => {
     );
 
     expect(meta).to.equal(undefined);
+  });
+});
+
+describe('MetadataInspector.defineMetadata()', () => {
+  it('stores class metadata via a MetadataAccessor key', () => {
+    const key = MetadataAccessor.create<{role: string}, ClassDecorator>(
+      'test.define-meta',
+    );
+
+    class MyTarget {}
+
+    MetadataInspector.defineMetadata(key, {role: 'admin'}, MyTarget);
+
+    const stored = MetadataInspector.getClassMetadata(key, MyTarget, {
+      ownMetadataOnly: true,
+    });
+    expect(stored).to.deepEqual({role: 'admin'});
+  });
+
+  it('overwrites existing class metadata when called a second time', () => {
+    const key = MetadataAccessor.create<{role: string}, ClassDecorator>(
+      'test.define-meta-overwrite',
+    );
+
+    class MyTarget {}
+
+    MetadataInspector.defineMetadata(key, {role: 'admin'}, MyTarget);
+    MetadataInspector.defineMetadata(key, {role: 'superuser'}, MyTarget);
+
+    const stored = MetadataInspector.getClassMetadata(key, MyTarget, {
+      ownMetadataOnly: true,
+    });
+    expect(stored).to.deepEqual({role: 'superuser'});
   });
 });

@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
+import debugFactory from 'debug';
 import {resolve} from 'path';
 import {ArtifactOptions, BaseArtifactBooter} from '../../..';
 
@@ -24,6 +25,13 @@ describe('base-artifact booter unit tests', () => {
       await booterInst.configure();
       expect(booterInst.dirs).to.be.eql(['test']);
       expect(booterInst.extensions).to.be.eql(['.test.js']);
+    });
+
+    it(`defaults 'dirs' / 'extensions' to empty arrays if not provided`, async () => {
+      const booterInst = givenBaseBooter({});
+      await booterInst.configure();
+      expect(booterInst.dirs).to.eql([]);
+      expect(booterInst.extensions).to.eql([]);
     });
 
     it(`creates and sets 'glob' pattern`, async () => {
@@ -52,6 +60,14 @@ describe('base-artifact booter unit tests', () => {
     });
   });
 
+  describe('artifactName', () => {
+    it('is derived from the class name without the Booter suffix', () => {
+      class WidgetBooter extends BaseArtifactBooter {}
+      const booterInst = new WidgetBooter(__dirname, TEST_OPTIONS);
+      expect(booterInst.artifactName).to.equal('Widget');
+    });
+  });
+
   describe('discover()', () => {
     it(`sets 'discovered' property`, async () => {
       const booterInst = givenBaseBooter();
@@ -59,6 +75,38 @@ describe('base-artifact booter unit tests', () => {
       booterInst.glob = '/abc.xyz';
       await booterInst.discover();
       expect(booterInst.discovered).to.eql([]);
+    });
+
+    it('discovers files matching the glob', async () => {
+      const booterInst = givenBaseBooter(
+        TEST_OPTIONS,
+        resolve(__dirname, '../../fixtures'),
+      );
+      booterInst.glob = '/multiple.artifact.js';
+      await booterInst.discover();
+      expect(booterInst.discovered).to.eql([
+        resolve(__dirname, '../../fixtures/multiple.artifact.js'),
+      ]);
+    });
+
+    it('discovers files when debug logging is enabled', async () => {
+      const namespaces = debugFactory.disable();
+      const originalLog = debugFactory.log;
+      // Keep the test output clean
+      debugFactory.log = () => {};
+      debugFactory.enable('loopback:boot:base-artifact-booter');
+      try {
+        const booterInst = givenBaseBooter(
+          TEST_OPTIONS,
+          resolve(__dirname, '../../fixtures'),
+        );
+        booterInst.glob = '/multiple.artifact.js';
+        await booterInst.discover();
+        expect(booterInst.discovered).to.have.lengthOf(1);
+      } finally {
+        debugFactory.log = originalLog;
+        debugFactory.enable(namespaces);
+      }
     });
   });
 
@@ -74,7 +122,10 @@ describe('base-artifact booter unit tests', () => {
     });
   });
 
-  function givenBaseBooter(options?: ArtifactOptions) {
-    return new BaseArtifactBooter(__dirname, options ?? TEST_OPTIONS);
+  function givenBaseBooter(
+    options?: ArtifactOptions,
+    projectRoot: string = __dirname,
+  ) {
+    return new BaseArtifactBooter(projectRoot, options ?? TEST_OPTIONS);
   }
 });

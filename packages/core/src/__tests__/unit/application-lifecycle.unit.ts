@@ -477,6 +477,33 @@ describe('Application life cycle', () => {
       expect(invoked).to.deepEqual(['second', 'first']);
     });
   });
+
+  describe('assertInStates()', () => {
+    it('throws when the application is not in the expected state', () => {
+      // Subclass to expose the protected method
+      class TestApp extends Application {
+        checkState(op: string, ...states: string[]) {
+          this.assertInStates(op, ...states);
+        }
+      }
+      const app = new TestApp();
+      // State is 'created'; 'started' is not valid
+      expect(() => app.checkState('start', 'started')).to.throw(
+        /Cannot start the application as it is created/,
+      );
+    });
+
+    it('does not throw when the application is in an expected state', () => {
+      class TestApp extends Application {
+        checkState(op: string, ...states: string[]) {
+          this.assertInStates(op, ...states);
+        }
+      }
+      const app = new TestApp();
+      // State is 'created'; passing 'created' should be fine
+      expect(() => app.checkState('test', 'created')).to.not.throw();
+    });
+  });
 });
 
 class ObservingComponentWithServers implements Component, LifeCycleObserver {
