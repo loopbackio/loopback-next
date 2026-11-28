@@ -250,6 +250,8 @@ exports.SANDBOX_FILES = [
   SourceEntries.FriendModel,
   SourceEntries.UserRepository,
   SourceEntries.FriendRepository,
+  SourceEntries.PersonModel,
+  SourceEntries.PersonRepository,
 ];
 
 exports.SANDBOX_FILES2 = [
@@ -291,6 +293,41 @@ exports.SANDBOX_FILES4 = [
   SourceEntries.OrderModel,
   SourceEntries.CustomerRepository,
   SourceEntries.OrderRepository,
+];
+
+exports.SANDBOX_FILES5 = [
+  {
+    path: MODEL_APP_PATH,
+    file: 'customer8.model.ts',
+    content: readSourceFile('./models/customer8.model.ts'),
+  },
+  {
+    path: REPOSITORY_APP_PATH,
+    file: 'customer8.repository.ts',
+    content: readSourceFile('./repositories/customer8.repository.ts'),
+  },
+  {
+    path: MODEL_APP_PATH,
+    file: 'product.model.ts',
+    content: readSourceFile('./models/product.model.ts'),
+  },
+  {
+    path: REPOSITORY_APP_PATH,
+    file: 'product.repository.ts',
+    content: readSourceFile('./repositories/product.repository.ts'),
+  },
+  {
+    path: MODEL_APP_PATH,
+    file: 'order-custom-ref-key.model.ts',
+    content: readSourceFile('./models/order-custom-ref-key.model.ts'),
+  },
+  {
+    path: REPOSITORY_APP_PATH,
+    file: 'order-custom-ref-key.repository.ts',
+    content: readSourceFile(
+      './repositories/order-custom-ref-key.repository.ts',
+    ),
+  },
 ];
 
 function readSourceFile(relativePath) {
